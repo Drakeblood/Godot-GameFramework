@@ -17,19 +17,18 @@ namespace GodotFramework.Core
             base._Ready();
             
             OpenLevel(ProjectStatics.StartupLevelResourcePath);
-
-            SaveGame S = new SaveGame();
         }
 
-        public static bool TryGetGameInstance(SceneTree SceneTreeObject, out GameInstance GameInstanceObject)
+        public static GameInstance GetGameInstance(SceneTree SceneTreeObject)
         {
-            GameInstanceObject = null;
             if (SceneTreeObject != null)
             {
-                GameInstanceObject = SceneTreeObject.Root.GetChildOrNull<GameInstance>(0);
+                return SceneTreeObject.Root.GetChildOrNull<GameInstance>(0);
             }
-            return IsInstanceValid(GameInstanceObject);
+            return null;
         }
+
+        public static T GetGameInstance<T>(SceneTree SceneTreeObject) where T : GameInstance => GetGameInstance(SceneTreeObject) as T;
 
         public void OpenLevel(string ResourcePath)
         {
