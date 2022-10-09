@@ -144,7 +144,7 @@ namespace GB.Statics
         {
             if (ContextNode != null)
             {
-                for(Node OuterNode = ContextNode.GetParent(); OuterNode != null; OuterNode = OuterNode.GetParent())
+                for(Node OuterNode = ContextNode; OuterNode != null; OuterNode = OuterNode.GetParent())
                 {
                     if (OuterNode is GBLevel)
                     {
