@@ -2,7 +2,7 @@
 
 namespace GB.Core
 {
-    public partial class Level : Node
+    public partial class GBLevel : Node
     {
         public virtual void InitLevel() { }
     }

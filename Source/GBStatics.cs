@@ -13,7 +13,7 @@ using GB.Core;
 
 namespace GB.Statics
 {
-    public static class ProjectStatics
+    public static class GBStatics
     {
         public static string SaveGamesLocation = "Saves/";
         public static string EncryptionKey = "SuperKey";//8 characters
@@ -35,7 +35,7 @@ namespace GB.Statics
                     if (Encrypt)
                     {
                         DES Key = DES.Create();
-                        using (CryptoStream CryptoStreamObject = new CryptoStream(StreamObject, Key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(ProjectStatics.EncryptionKey)), CryptoStreamMode.Write))
+                        using (CryptoStream CryptoStreamObject = new CryptoStream(StreamObject, Key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(GBStatics.EncryptionKey)), CryptoStreamMode.Write))
                         {
                             Serializer.Serialize(CryptoStreamObject, SerializableObject);
                         }
@@ -76,7 +76,7 @@ namespace GB.Statics
                     if (Encrypt)
                     {
                         DES Key = DES.Create();
-                        using (CryptoStream CryptoStreamObject = new CryptoStream(StreamObject, Key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(ProjectStatics.EncryptionKey)), CryptoStreamMode.Read))
+                        using (CryptoStream CryptoStreamObject = new CryptoStream(StreamObject, Key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(GBStatics.EncryptionKey)), CryptoStreamMode.Read))
                         {
                             DeserializedObject = (T)Serializer.Deserialize(CryptoStreamObject);
                         }
@@ -99,7 +99,7 @@ namespace GB.Statics
             return default;
         }
 
-        public static void SaveGame<T>(T SaveGameObject, string FileName, bool Encrypt = true) where T : SaveGame
+        public static void SaveGame<T>(T SaveGameObject, string FileName, bool Encrypt = true) where T : GBSaveGame
         {
             if (!Directory.Exists(SaveGamesLocation))
             {
@@ -111,7 +111,7 @@ namespace GB.Statics
             SerializeObjectToXml<T>(SaveGameObject, SavePath, Encrypt);
         }
 
-        public static T LoadGame<T>(string FileName, bool Encrypt = true) where T : SaveGame
+        public static T LoadGame<T>(string FileName, bool Encrypt = true) where T : GBSaveGame
         {
             string LoadPath = SaveGamesLocation + FileName;
 
@@ -122,7 +122,7 @@ namespace GB.Statics
         {
             SceneTree SceneTreeObject = ContextNode.GetTree();
 
-            Level CurrentLevel = GetLevel(ContextNode);
+            GBLevel CurrentLevel = GetLevel(ContextNode);
             if (CurrentLevel != null)
             {
                 CurrentLevel.QueueFree();
@@ -131,7 +131,7 @@ namespace GB.Statics
             PackedScene LevelPackedScene = ResourceLoader.Load<PackedScene>(ResourcePath);
             if (LevelPackedScene != null)
             {
-                Level NewLevel = LevelPackedScene.Instantiate() as Level;
+                GBLevel NewLevel = LevelPackedScene.Instantiate() as GBLevel;
                 if (NewLevel != null)
                 {
                     NewLevel.InitLevel();
@@ -140,37 +140,37 @@ namespace GB.Statics
             }
         }
 
-        public static Level GetLevel(Node ContextNode)
+        public static GBLevel GetLevel(Node ContextNode)
         {
             if (ContextNode != null)
             {
                 for(Node OuterNode = ContextNode.GetParent(); OuterNode != null; OuterNode = OuterNode.GetParent())
                 {
-                    if (OuterNode is Level)
+                    if (OuterNode is GBLevel)
                     {
-                        return OuterNode as Level;
+                        return OuterNode as GBLevel;
                     }
                 }
             }
             return null;
         }
 
-        public static T GetLevel<T>(Node ContextNode) where T : Level => GetLevel(ContextNode) as T;
+        public static T GetLevel<T>(Node ContextNode) where T : GBLevel => GetLevel(ContextNode) as T;
 
-        public static Level GetLevel(SceneTree SceneTreeObject)
+        public static GBLevel GetLevel(SceneTree SceneTreeReference)
         {
-            Array<Node> RootChildren = SceneTreeObject.Root.GetChildren();
+            Array<Node> RootChildren = SceneTreeReference.Root.GetChildren();
 
             foreach (Node NodeObject in RootChildren)
             {
-                if (NodeObject is Level)
+                if (NodeObject is GBLevel)
                 {
-                    return NodeObject as Level;
+                    return NodeObject as GBLevel;
                 }
             }
             return null;
         }
 
-        public static T GetLevel<T>(SceneTree SceneTreeObject) where T : Level => GetLevel(SceneTreeObject) as T;
+        public static T GetLevel<T>(SceneTree SceneTreeReference) where T : GBLevel => GetLevel(SceneTreeReference) as T;
     }
 }
