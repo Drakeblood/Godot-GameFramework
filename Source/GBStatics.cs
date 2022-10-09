@@ -134,8 +134,8 @@ namespace GB.Statics
                 GBLevel NewLevel = LevelPackedScene.Instantiate() as GBLevel;
                 if (NewLevel != null)
                 {
-                    NewLevel.InitLevel();
                     SceneTreeObject.Root.AddChild(NewLevel);
+                    NewLevel.InitLevel();
                 }
             }
         }
