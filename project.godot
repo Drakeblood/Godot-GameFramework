@@ -8,12 +8,23 @@
 
 config_version=5
 
+_global_script_classes=[{
+"base": "SceneTree",
+"class": &"GBSceneTree",
+"language": &"GDScript",
+"path": "res://Source/GBSceneTree.gd"
+}]
+_global_script_class_icons={
+"GBSceneTree": ""
+}
+
 [application]
 
 config/name="Godot Framework"
-run/main_scene="res://Scenes/GameInstanceScene.tscn"
+run/main_scene="res://Scenes/MainMenuScene.tscn"
 config/features=PackedStringArray("4.0", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+run/main_loop_type="GBSceneTree"
 
 [dotnet]
 

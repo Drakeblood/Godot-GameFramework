@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace GodotFramework.Core
+namespace GB.Core
 {
     public partial class SaveGame : Godot.Object, ISerializable
     {

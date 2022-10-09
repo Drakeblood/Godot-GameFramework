@@ -1,20 +1,20 @@
 using System;
-using System.Linq;
 using System.IO;
+using System.Text;
+using System.Linq;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
 
 using Godot;
+using Godot.Collections;
 
-using GodotFramework.Core;
-using System.Security.Cryptography;
-using System.Text;
+using GB.Core;
 
-namespace GodotFramework.Statics
+namespace GB.Statics
 {
     public static class ProjectStatics
     {
-        public static string StartupLevelResourcePath = "res://Scenes/MainMenuScene.tscn";
         public static string SaveGamesLocation = "Saves/";
         public static string EncryptionKey = "SuperKey";//8 characters
 
@@ -117,5 +117,60 @@ namespace GodotFramework.Statics
 
             return DeserializeObjectFromXml<T>(LoadPath, Encrypt);
         }
+
+        public static void OpenLevel(Node ContextNode, string ResourcePath)
+        {
+            SceneTree SceneTreeObject = ContextNode.GetTree();
+
+            Level CurrentLevel = GetLevel(ContextNode);
+            if (CurrentLevel != null)
+            {
+                CurrentLevel.QueueFree();
+            }
+
+            PackedScene LevelPackedScene = ResourceLoader.Load<PackedScene>(ResourcePath);
+            if (LevelPackedScene != null)
+            {
+                Level NewLevel = LevelPackedScene.Instantiate() as Level;
+                if (NewLevel != null)
+                {
+                    NewLevel.InitLevel();
+                    SceneTreeObject.Root.AddChild(NewLevel);
+                }
+            }
+        }
+
+        public static Level GetLevel(Node ContextNode)
+        {
+            if (ContextNode != null)
+            {
+                for(Node OuterNode = ContextNode.GetParent(); OuterNode != null; OuterNode = OuterNode.GetParent())
+                {
+                    if (OuterNode is Level)
+                    {
+                        return OuterNode as Level;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static T GetLevel<T>(Node ContextNode) where T : Level => GetLevel(ContextNode) as T;
+
+        public static Level GetLevel(SceneTree SceneTreeObject)
+        {
+            Array<Node> RootChildren = SceneTreeObject.Root.GetChildren();
+
+            foreach (Node NodeObject in RootChildren)
+            {
+                if (NodeObject is Level)
+                {
+                    return NodeObject as Level;
+                }
+            }
+            return null;
+        }
+
+        public static T GetLevel<T>(SceneTree SceneTreeObject) where T : Level => GetLevel(SceneTreeObject) as T;
     }
 }
