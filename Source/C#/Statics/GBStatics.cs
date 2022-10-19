@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 using Godot;
 using Godot.Collections;
 
-using GB.Core;
+using GB.GameFramework;
 
 namespace GB.Statics
 {

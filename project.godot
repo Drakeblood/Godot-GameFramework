@@ -12,7 +12,7 @@ _global_script_classes=[{
 "base": "SceneTree",
 "class": &"GBSceneTree",
 "language": &"GDScript",
-"path": "res://Source/GBSceneTree.gd"
+"path": "res://Source/GDScript/GBSceneTree.gd"
 }]
 _global_script_class_icons={
 "GBSceneTree": ""

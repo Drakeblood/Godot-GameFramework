@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace GB.Core
+namespace GB.GameFramework
 {
     public partial class GBLevel : Node
     {
