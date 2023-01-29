@@ -1,2 +1,16 @@
 # Godot 4+ specific ignores
 .godot/
+
+.vscode
+.vs
+*.VC.db
+*.opensdf
+*.opendb
+*.sdf
+*.sln
+*.suo
+*.xcodeproj
+*.xcworkspace
+*.code-workspace
+*.csproj
+.vsconfig

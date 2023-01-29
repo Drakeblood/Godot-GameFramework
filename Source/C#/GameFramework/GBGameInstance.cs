@@ -2,7 +2,7 @@ using Godot;
 
 namespace GB.GameFramework
 { 
-    public partial class GBGameInstance : Godot.Object
+    public partial class GBGameInstance : GodotObject
 	{
         private SceneTree SceneTreeObject;
 

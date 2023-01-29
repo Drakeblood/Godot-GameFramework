@@ -2,7 +2,7 @@ using Godot;
 
 namespace GB.GameFramework
 {
-    public partial class GBNodeComponent : Godot.Object
+    public partial class GBNodeComponent : GodotObject
     {
         private Node ComponentOwner;
 

@@ -1,8 +1,10 @@
 using System.Runtime.Serialization;
 
+using Godot;
+
 namespace GB.GameFramework
 {
-    public partial class GBSaveGame : Godot.Object, ISerializable
+    public partial class GBSaveGame : GodotObject, ISerializable
     {
         public GBSaveGame() { }
 
