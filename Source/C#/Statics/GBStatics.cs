@@ -118,11 +118,16 @@ namespace GB.Statics
             return DeserializeObjectFromXml<T>(LoadPath, Encrypt);
         }
 
-        public static void OpenLevel(Node ContextNode, string ResourcePath)
+        public static GBGameInstance GetGameInstance(SceneTree SceneTreeObject)
         {
-            SceneTree SceneTreeObject = ContextNode.GetTree();
+            return SceneTreeObject.GetScript().AsGodotObject() as GBGameInstance;
+        }
+        
+        public static T GetGameInstance<T>(SceneTree SceneTreeObject) where T : GBGameInstance => GetGameInstance(SceneTreeObject) as T;
 
-            GBLevel CurrentLevel = GetLevel(ContextNode);
+        public static void OpenLevel(SceneTree SceneTreeObject, string ResourcePath)
+        {
+            GBLevel CurrentLevel = GetLevel(SceneTreeObject);
             if (CurrentLevel != null)
             {
                 CurrentLevel.QueueFree();
@@ -138,6 +143,12 @@ namespace GB.Statics
                     NewLevel.InitLevel();
                 }
             }
+        }
+
+        public static void OpenLevel(Node ContextNode, string ResourcePath)
+        {
+            SceneTree SceneTreeObject = ContextNode.GetTree();
+            OpenLevel(SceneTreeObject, ResourcePath);
         }
 
         public static GBLevel GetLevel(Node ContextNode)
@@ -157,9 +168,9 @@ namespace GB.Statics
 
         public static T GetLevel<T>(Node ContextNode) where T : GBLevel => GetLevel(ContextNode) as T;
 
-        public static GBLevel GetLevel(SceneTree SceneTreeReference)
+        public static GBLevel GetLevel(SceneTree SceneTreeObject)
         {
-            Array<Node> RootChildren = SceneTreeReference.Root.GetChildren();
+            Array<Node> RootChildren = SceneTreeObject.Root.GetChildren();
 
             foreach (Node NodeObject in RootChildren)
             {
@@ -171,6 +182,6 @@ namespace GB.Statics
             return null;
         }
 
-        public static T GetLevel<T>(SceneTree SceneTreeReference) where T : GBLevel => GetLevel(SceneTreeReference) as T;
+        public static T GetLevel<T>(SceneTree SceneTreeObject) where T : GBLevel => GetLevel(SceneTreeObject) as T;
     }
 }

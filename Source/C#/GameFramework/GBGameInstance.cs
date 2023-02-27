@@ -10,15 +10,14 @@ namespace GB.GameFramework
 
         public virtual void Init() { }
 
-        public void SetSceneTree(SceneTree SceneTreeReference)
+        public SceneTree GetSceneTree() => SceneTreeObject;
+
+        public void SetSceneTree(SceneTree NewSceneTree)
         {
-            if (SceneTreeReference != null && SceneTreeObject != SceneTreeReference)
+            if (NewSceneTree != null && NewSceneTree != SceneTreeObject)
             {
-                SceneTreeObject = SceneTreeReference;
+                SceneTreeObject = NewSceneTree;
             }
         }
-
-        public static GBGameInstance GetGameInstance(SceneTree SceneTreeReference) => SceneTreeReference.GetScript().AsGodotObject() as GBGameInstance;
-        public static T GetGameInstance<T>(SceneTree SceneTreeReference) where T : GBGameInstance => GetGameInstance(SceneTreeReference) as T;
     }
 }

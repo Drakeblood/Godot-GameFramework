@@ -6,9 +6,9 @@ namespace GB.GameFramework
     {
         private Node ComponentOwner;
 
-        public GBNodeComponent(Node ComponentOwnerReference)
+        public GBNodeComponent(Node Owner)
         {
-            ComponentOwner = ComponentOwnerReference;
+            ComponentOwner = Owner;
         }
 
         public T GetOwner<T>() where T : Node => ComponentOwner as T;
