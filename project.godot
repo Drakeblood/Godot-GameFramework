@@ -12,10 +12,10 @@ config_version=5
 
 config/name="GBFramework"
 run/main_scene="res://Example/Content/Scenes/MainMenuLevel.tscn"
-config/features=PackedStringArray("4.0", "C#", "Forward Plus")
+run/main_loop_type="GBSceneTree"
+config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
-run/main_loop_type="GBSceneTree"
 
 [dotnet]
 
