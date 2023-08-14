@@ -10,13 +10,13 @@ config_version=5
 
 [application]
 
-config/name="GBFramework"
+config/name="Godot-GameFramework"
 run/main_scene="res://Example/Content/Scenes/MainMenuLevel.tscn"
-run/main_loop_type="GBSceneTree"
+run/main_loop_type="GFSceneTree"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
 
 [dotnet]
 
-project/assembly_name="GBFramework"
+project/assembly_name="Godot-GameFramework"

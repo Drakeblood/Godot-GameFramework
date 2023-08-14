@@ -2,13 +2,13 @@ using System.Runtime.Serialization;
 
 using Godot;
 
-namespace GB.GameFramework
+namespace GameFramework.System
 {
-    public partial class GBSaveGame : GodotObject, ISerializable
+    public partial class SaveGame : GodotObject, ISerializable
     {
-        public GBSaveGame() { }
+        public SaveGame() { }
 
-        public GBSaveGame(SerializationInfo Info, StreamingContext Context)
+        public SaveGame(SerializationInfo Info, StreamingContext Context)
         {
             //VarName = (VarName type)Info.GetValue("VarName", typeof(VarName type));
         }

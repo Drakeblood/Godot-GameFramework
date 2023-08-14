@@ -1,10 +1,10 @@
 using Godot;
 
-using GB.GameFramework;
+using GameFramework.System;
 
 namespace Example
 {
-    public partial class MainMenuLevel : GBLevel
+    public partial class MainMenuLevel : Level
     {
         public override void InitLevel()
         {

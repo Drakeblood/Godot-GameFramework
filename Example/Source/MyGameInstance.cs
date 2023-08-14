@@ -1,10 +1,10 @@
 using Godot;
 
-using GB.GameFramework;
+using GameFramework.System;
 
 namespace Example
 {
-    public partial class MyGameInstance : GBGameInstance
+    public partial class MyGameInstance : GameInstance
     {
         public override void Init()
         {
