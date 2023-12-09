@@ -8,46 +8,48 @@ using System.Security.Cryptography;
 
 using Godot;
 
-namespace GameFramework.System
+using GameFramework.System;
+
+namespace GameFramework.Statics
 {
     public static class ProjectStatics
     {
         public static string SaveGamesLocation = "Saves/";
         public static string EncryptionKey = "SuperKey";//8 characters
 
-        public static bool SerializeObjectToXml<T>(T SerializableObject, string FileName, bool Encrypt = true)
+        public static bool SerializeObjectToXml<T>(T serializableObject, string fileName, bool encrypt = true)
         {
             if (typeof(T).IsSerializable || typeof(T).GetInterfaces().Contains(typeof(ISerializable)))
             {
-                if (!FileName.EndsWith(".xml"))
+                if (!fileName.EndsWith(".xml"))
                 {
-                    FileName += ".xml";
+                    fileName += ".xml";
                 }
 
                 try
                 {
-                    XmlSerializer Serializer = new XmlSerializer(typeof(T));
-                    Stream StreamObject = new FileStream(FileName, FileMode.Create, global::System.IO.FileAccess.Write);
+                    XmlSerializer serializer = new XmlSerializer(typeof(T));
+                    Stream streamObject = new FileStream(fileName, FileMode.Create, global::System.IO.FileAccess.Write);
 
-                    if (Encrypt)
+                    if (encrypt)
                     {
-                        DES Key = DES.Create();
-                        using (CryptoStream CryptoStreamObject = new CryptoStream(StreamObject, Key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(ProjectStatics.EncryptionKey)), CryptoStreamMode.Write))
+                        DES key = DES.Create();
+                        using (CryptoStream cryptoStreamObject = new CryptoStream(streamObject, key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(ProjectStatics.EncryptionKey)), CryptoStreamMode.Write))
                         {
-                            Serializer.Serialize(CryptoStreamObject, SerializableObject);
+                            serializer.Serialize(cryptoStreamObject, serializableObject);
                         }
                     }
                     else
                     {
-                        Serializer.Serialize(StreamObject, SerializableObject);
+                        serializer.Serialize(streamObject, serializableObject);
                     }
 
-                    StreamObject.Close();
+                    streamObject.Close();
                     return true;
                 }
-                catch (Exception Ex)
+                catch (Exception ex)
                 {
-                    GD.Print(Ex.Message);
+                    GD.Print(ex.Message);
                     return false;
                 }
             }
@@ -55,40 +57,40 @@ namespace GameFramework.System
             return false;
         }
 
-        public static T DeserializeObjectFromXml<T>(string FileName, bool Encrypt = true)
+        public static T DeserializeObjectFromXml<T>(string fileName, bool encrypt = true)
         {
             if (typeof(T).IsSerializable || typeof(T).GetInterfaces().Contains(typeof(ISerializable)))
             {
-                if (!FileName.EndsWith(".xml"))
+                if (!fileName.EndsWith(".xml"))
                 {
-                    FileName += ".xml";
+                    fileName += ".xml";
                 }
 
                 try
                 {
-                    XmlSerializer Serializer = new XmlSerializer(typeof(T));
-                    Stream StreamObject = new FileStream(FileName, FileMode.Open, global::System.IO.FileAccess.Read);
-                    T DeserializedObject = default;
+                    XmlSerializer serializer = new XmlSerializer(typeof(T));
+                    Stream streamObject = new FileStream(fileName, FileMode.Open, global::System.IO.FileAccess.Read);
+                    T deserializedObject = default;
 
-                    if (Encrypt)
+                    if (encrypt)
                     {
-                        DES Key = DES.Create();
-                        using (CryptoStream CryptoStreamObject = new CryptoStream(StreamObject, Key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(ProjectStatics.EncryptionKey)), CryptoStreamMode.Read))
+                        DES key = DES.Create();
+                        using (CryptoStream cryptoStreamObject = new CryptoStream(streamObject, key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(ProjectStatics.EncryptionKey)), CryptoStreamMode.Read))
                         {
-                            DeserializedObject = (T)Serializer.Deserialize(CryptoStreamObject);
+                            deserializedObject = (T)serializer.Deserialize(cryptoStreamObject);
                         }
                     }
                     else
                     {
-                        DeserializedObject = (T)Serializer.Deserialize(StreamObject);
+                        deserializedObject = (T)serializer.Deserialize(streamObject);
                     }
 
-                    StreamObject.Close();
-                    return DeserializedObject;
+                    streamObject.Close();
+                    return deserializedObject;
                 }
-                catch(Exception Ex)
+                catch(Exception ex)
                 {
-                    GD.Print(Ex.Message);
+                    GD.Print(ex.Message);
                     return default;
                 }
             }
@@ -96,23 +98,71 @@ namespace GameFramework.System
             return default;
         }
 
-        public static void SaveGame<T>(T SaveGameObject, string FileName, bool Encrypt = true) where T : SaveGame
+        public static void SaveGame<T>(T saveGameObject, string fileName, bool encrypt = true) where T : SaveGame
         {
             if (!Directory.Exists(SaveGamesLocation))
             {
                 Directory.CreateDirectory(SaveGamesLocation);
             }
 
-            string SavePath = SaveGamesLocation + FileName;
+            string savePath = SaveGamesLocation + fileName;
 
-            SerializeObjectToXml<T>(SaveGameObject, SavePath, Encrypt);
+            SerializeObjectToXml<T>(saveGameObject, savePath, encrypt);
         }
 
-        public static T LoadGame<T>(string FileName, bool Encrypt = true) where T : SaveGame
+        public static T LoadGame<T>(string fileName, bool encrypt = true) where T : SaveGame
         {
-            string LoadPath = SaveGamesLocation + FileName;
+            string loadPath = SaveGamesLocation + fileName;
 
-            return DeserializeObjectFromXml<T>(LoadPath, Encrypt);
+            return DeserializeObjectFromXml<T>(loadPath, encrypt);
+        }
+
+        public static T GetGameInstance<T>(SceneTree sceneTree) where T : GameInstance
+        {
+            GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
+            if (gfSceneTree == null)
+            {
+                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" setting is set to \"GFSceneTree\".");
+                return null;
+            }
+
+            return gfSceneTree.GameInstance as T;
+        }
+
+        public static T GetGameMode<T>(SceneTree sceneTree) where T : GameMode
+        {
+            GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
+            if (gfSceneTree == null)
+            {
+                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" setting is set to \"GFSceneTree\".");
+                return null;
+            }
+
+            return gfSceneTree.GameMode as T;
+        }
+
+        public static T GetLevel<T>(SceneTree sceneTree) where T : Level
+        {
+            GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
+            if (gfSceneTree == null)
+            {
+                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" setting is set to \"GFSceneTree\".");
+                return null;
+            }
+
+            return gfSceneTree.CurrentLevel as T;
+        }
+
+        public static void OpenLevel(SceneTree sceneTree, string resourcePath)
+        {
+            GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
+            if (gfSceneTree == null)
+            {
+                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" setting is set to \"GFSceneTree\".");
+                return;
+            }
+
+            gfSceneTree.OpenLevel(resourcePath);
         }
     }
 }

@@ -8,12 +8,12 @@ namespace GameFramework.System
     {
         public SaveGame() { }
 
-        public SaveGame(SerializationInfo Info, StreamingContext Context)
+        public SaveGame(SerializationInfo info, StreamingContext context)
         {
             //VarName = (VarName type)Info.GetValue("VarName", typeof(VarName type));
         }
 
-        public virtual void GetObjectData(SerializationInfo Info, StreamingContext Context)
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             //Info.AddValue("VarName", this.VarName);
         }
