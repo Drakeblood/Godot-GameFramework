@@ -1,9 +1,12 @@
 using Godot;
 
-public partial class GameMode : Node
+namespace GameFramework.System
 {
-    public virtual void InitGame()
+    public partial class GameMode : Node
     {
-        
+        public virtual void InitGame(GFSceneTree sceneTree)
+        {
+
+        }
     }
 }

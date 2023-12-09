@@ -59,13 +59,12 @@ namespace GameFramework.System
                 gameInstanceGO.SetScript(gameInstanceScript);
 
                 GameInstance = InstanceFromId(gameInstanceId) as GameInstance;
-                GameInstance.OwningSceneTree = this;
-                GameInstance.Init();
+                GameInstance.Init(this);
             }
 
             CurrentLevel = FindLevel();
             CreateGameMode();
-            if (CurrentLevel != null) CurrentLevel.InitLevel();
+            if (CurrentLevel != null) CurrentLevel.InitLevel(this);
         }
 
         public partial Level FindLevel()
@@ -114,7 +113,7 @@ namespace GameFramework.System
                     CurrentLevel = newLevel;
 
                     CreateGameMode();
-                    CurrentLevel.InitLevel();
+                    CurrentLevel.InitLevel(this);
 
                     Root.AddChild(newLevel);
                 }
@@ -147,7 +146,7 @@ namespace GameFramework.System
 
             GameMode = InstanceFromId(gameModeNodeId) as GameMode;
             Root.AddChild(GameMode);
-            GameMode.InitGame();
+            GameMode.InitGame(this);
         }
     }
 

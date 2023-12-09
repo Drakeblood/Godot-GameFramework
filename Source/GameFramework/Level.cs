@@ -7,7 +7,7 @@ namespace GameFramework.System
         [Export]
         public Script GameModeScriptOverride;
 
-        public virtual void InitLevel()
+        public virtual void InitLevel(GFSceneTree sceneTree)
         {
 
         }

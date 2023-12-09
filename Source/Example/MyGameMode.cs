@@ -6,9 +6,9 @@ namespace Example
 {
     public partial class MyGameMode : GameMode
     {
-        public override void InitGame()
+        public override void InitGame(GFSceneTree sceneTree)
         {
-            base.InitGame();
+            base.InitGame(sceneTree);
 
             GD.Print("MyGameMode.Init");
         }

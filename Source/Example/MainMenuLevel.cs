@@ -6,9 +6,9 @@ namespace Example
 {
     public partial class MainMenuLevel : Level
     {
-        public override void InitLevel()
+        public override void InitLevel(GFSceneTree sceneTree)
         {
-            base.InitLevel();
+            base.InitLevel(sceneTree);
 
             GD.Print("MainMenuLevel.InitLevel");
         }
