@@ -45,12 +45,12 @@ namespace GameFramework.System
         public override partial void _Initialize()
         {
             {
-                string gameInstanceScriptPath = ProjectSettings.GetSetting("application/run/game_instance").AsString();
+                string gameInstanceScriptPath = ProjectSettings.GetSetting("application/game_framework/game_instance").AsString();
                 Script gameInstanceScript = GD.Load<Script>(gameInstanceScriptPath);
 
                 if (gameInstanceScript == null)
                 {
-                    GD.PrintErr($"Load script from {gameInstanceScriptPath} path failed. Please update \"application/run/game_instance\" option in project settings.");
+                    GD.PrintErr($"Load script from {gameInstanceScriptPath} path failed. Please update \"application/game_framework/game_instance\" option in project settings.");
                     return;
                 }
 
@@ -130,13 +130,13 @@ namespace GameFramework.System
             }
             else
             {
-                string gameModeScriptPath = ProjectSettings.GetSetting("application/run/default_game_mode").AsString();
+                string gameModeScriptPath = ProjectSettings.GetSetting("application/game_framework/default_game_mode").AsString();
                 gameModeScript = GD.Load<Script>(gameModeScriptPath);
             }
 
             if (gameModeScript == null)
             {
-                GD.PrintErr($"Load script from {gameModeScript} path failed. Please update \"application/run/default_game_mode\" option in project settings.");
+                GD.PrintErr($"Load script from {gameModeScript} path failed. Please update \"application/game_framework/default_game_mode\" option in project settings.");
                 return;
             }
 
