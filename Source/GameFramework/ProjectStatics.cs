@@ -88,7 +88,7 @@ namespace GameFramework.Statics
                     streamObject.Close();
                     return deserializedObject;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     GD.Print(ex.Message);
                     return default;
@@ -122,7 +122,7 @@ namespace GameFramework.Statics
             GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
             if (gfSceneTree == null)
             {
-                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" setting is set to \"GFSceneTree\".");
+                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
                 return null;
             }
 
@@ -134,7 +134,7 @@ namespace GameFramework.Statics
             GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
             if (gfSceneTree == null)
             {
-                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" setting is set to \"GFSceneTree\".");
+                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
                 return null;
             }
 
@@ -146,7 +146,7 @@ namespace GameFramework.Statics
             GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
             if (gfSceneTree == null)
             {
-                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" setting is set to \"GFSceneTree\".");
+                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
                 return null;
             }
 
@@ -158,7 +158,7 @@ namespace GameFramework.Statics
             GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
             if (gfSceneTree == null)
             {
-                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" setting is set to \"GFSceneTree\".");
+                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
                 return;
             }
 
