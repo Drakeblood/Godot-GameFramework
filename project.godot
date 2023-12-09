@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="Godot-GameFramework"
-run/main_scene="res://Example/Content/Scenes/MainMenuLevel.tscn"
+run/main_scene="res://Content/Example/Scenes/MainMenuLevel.tscn"
 run/main_loop_type="GFSceneTree"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
-game_framework/game_instance="res://Example/Source/MyGameInstance.cs"
-game_framework/default_game_mode="res://Example/Source/MyGameMode.cs"
+game_framework/game_instance="res://Source/Example/MyGameInstance.cs"
+game_framework/default_game_mode="res://Source/Example/MyGameMode.cs"
 
 [dotnet]
 

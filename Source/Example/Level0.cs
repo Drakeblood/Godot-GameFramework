@@ -26,7 +26,7 @@ namespace Example
 
             if(gfSceneTree != null )
             {
-                gfSceneTree.OpenLevel("res://Example/Content/Scenes/MainMenuLevel.tscn");
+                gfSceneTree.OpenLevel("res://Content/Example/Scenes/MainMenuLevel.tscn");
             }
         }
     }
