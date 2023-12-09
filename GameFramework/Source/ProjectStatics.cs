@@ -7,7 +7,6 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 
 using Godot;
-using Godot.Collections;
 
 namespace GameFramework.System
 {
@@ -115,71 +114,5 @@ namespace GameFramework.System
 
             return DeserializeObjectFromXml<T>(LoadPath, Encrypt);
         }
-
-        public static GameInstance GetGameInstance(SceneTree SceneTreeObject)
-        {
-            return SceneTreeObject.GetScript().AsGodotObject() as GameInstance;
-        }
-        
-        public static T GetGameInstance<T>(SceneTree SceneTreeObject) where T : GameInstance => GetGameInstance(SceneTreeObject) as T;
-
-        public static void OpenLevel(SceneTree SceneTreeObject, string ResourcePath)
-        {
-            Level CurrentLevel = GetLevel(SceneTreeObject);
-            if (CurrentLevel != null)
-            {
-                CurrentLevel.QueueFree();
-            }
-
-            PackedScene LevelPackedScene = ResourceLoader.Load<PackedScene>(ResourcePath);
-            if (LevelPackedScene != null)
-            {
-                Level NewLevel = LevelPackedScene.Instantiate() as Level;
-                if (NewLevel != null)
-                {
-                    SceneTreeObject.Root.AddChild(NewLevel);
-                    NewLevel.InitLevel();
-                }
-            }
-        }
-
-        public static void OpenLevel(Node ContextNode, string ResourcePath)
-        {
-            SceneTree SceneTreeObject = ContextNode.GetTree();
-            OpenLevel(SceneTreeObject, ResourcePath);
-        }
-
-        public static Level GetLevel(Node ContextNode)
-        {
-            if (ContextNode != null)
-            {
-                for(Node OuterNode = ContextNode; OuterNode != null; OuterNode = OuterNode.GetParent())
-                {
-                    if (OuterNode is Level)
-                    {
-                        return OuterNode as Level;
-                    }
-                }
-            }
-            return null;
-        }
-
-        public static T GetLevel<T>(Node ContextNode) where T : Level => GetLevel(ContextNode) as T;
-
-        public static Level GetLevel(SceneTree SceneTreeObject)
-        {
-            Array<Node> RootChildren = SceneTreeObject.Root.GetChildren();
-
-            foreach (Node NodeObject in RootChildren)
-            {
-                if (NodeObject is Level)
-                {
-                    return NodeObject as Level;
-                }
-            }
-            return null;
-        }
-
-        public static T GetLevel<T>(SceneTree SceneTreeObject) where T : Level => GetLevel(SceneTreeObject) as T;
     }
 }

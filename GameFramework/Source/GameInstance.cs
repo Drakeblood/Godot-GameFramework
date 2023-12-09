@@ -4,7 +4,7 @@ namespace GameFramework.System
 { 
     public partial class GameInstance : GodotObject
 	{
-        public SceneTree SceneTree { get; set; }
+        public GFSceneTree OwningSceneTree { get; set; }
 
         public GameInstance() { }
 

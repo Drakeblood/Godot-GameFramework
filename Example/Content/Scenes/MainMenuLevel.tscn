@@ -2,5 +2,12 @@
 
 [ext_resource type="Script" path="res://Example/Source/MainMenuLevel.cs" id="1_vmhj1"]
 
-[node name="MainMenu" type="Node2D"]
+[node name="MainMenuLevel" type="Node"]
 script = ExtResource("1_vmhj1")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 412.0
+offset_top = 117.0
+offset_right = 693.0
+offset_bottom = 205.0
+text = "Open Level0"

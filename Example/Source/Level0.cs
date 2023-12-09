@@ -4,18 +4,18 @@ using GameFramework.System;
 
 namespace Example
 {
-    public partial class MainMenuLevel : Level
+    public partial class Level0 : Level
     {
         public override void InitLevel()
         {
             base.InitLevel();
 
-            GD.Print("MainMenuLevel.InitLevel");
+            GD.Print("Level0.InitLevel");
         }
 
         public override void _EnterTree()
         {
-            GD.Print("MainMenuLevel._EnterTree");
+            GD.Print("Level0._EnterTree");
 
             GetNode<Button>("Button").ButtonDown += OnButtonDown;
         }
@@ -26,7 +26,7 @@ namespace Example
 
             if(gfSceneTree != null )
             {
-                gfSceneTree.OpenLevel("res://Example/Content/Scenes/Level0.tscn");
+                gfSceneTree.OpenLevel("res://Example/Content/Scenes/MainMenuLevel.tscn");
             }
         }
     }
