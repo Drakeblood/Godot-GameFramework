@@ -8,5 +8,10 @@ namespace GameFramework.System
         {
 
         }
+
+        //public virtual void CreatePlayer(List<>)
+        //{
+
+        //}
     }
 }

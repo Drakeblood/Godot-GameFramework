@@ -144,6 +144,11 @@ namespace GameFramework.System
             ulong gameModeNodeId = gameModeNode.GetInstanceId();
             gameModeNode.SetScript(gameModeScript);
 
+            if (GameMode != null)
+            {
+                GameMode.Free();
+            }
+
             GameMode = InstanceFromId(gameModeNodeId) as GameMode;
             Root.AddChild(GameMode);
             GameMode.InitGame(this);

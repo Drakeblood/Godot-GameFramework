@@ -4,6 +4,7 @@
 
 [node name="Level0" type="Node"]
 script = ExtResource("1_x5jyq")
+playerStartsNodePathes = [NodePath("PlayerStart")]
 
 [node name="Button" type="Button" parent="."]
 offset_left = 71.0
@@ -12,3 +13,7 @@ offset_right = 352.0
 offset_bottom = 302.0
 text = "Main menu
 "
+
+[node name="PlayerStart" type="Marker2D" parent="."]
+position = Vector2(173, 461)
+gizmo_extents = 20.0

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Godot;
 
 namespace GameFramework.System
@@ -9,6 +11,13 @@ namespace GameFramework.System
         {
             get => sceneTree;
             private set { sceneTree = value; }
+        }
+
+        private List<object> localPlayers;
+        public List<object> LocalPlayers
+        {
+            get => localPlayers;
+            private set { localPlayers = value; }
         }
 
         public GameInstance() { }
