@@ -16,8 +16,8 @@ run/main_loop_type="GFSceneTree"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
-game_framework/game_instance="res://Source/Example/MyGameInstance.cs"
-game_framework/default_game_mode="res://Source/Example/MyGameMode.cs"
+game_framework/game_instance_script="res://Source/Example/MyGameInstance.cs"
+game_framework/default_game_mode_settings="res://Content/GameFramework/DefaultGameModeSettings.tres"
 
 [dotnet]
 

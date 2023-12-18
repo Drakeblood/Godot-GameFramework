@@ -6,7 +6,7 @@ namespace GameFramework.System
     public partial class Level : Node
     {
         [Export]
-        public Script GameModeScriptOverride;
+        public GameModeSettings GameModeSettingsOverride;
 
         public virtual void InitLevel(GFSceneTree sceneTree)
         {

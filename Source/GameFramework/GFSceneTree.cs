@@ -45,12 +45,12 @@ namespace GameFramework.System
         public override partial void _Initialize()
         {
             {
-                string gameInstanceScriptPath = ProjectSettings.GetSetting("application/game_framework/game_instance").AsString();
+                string gameInstanceScriptPath = ProjectSettings.GetSetting("application/game_framework/game_instance_script").AsString();
                 Script gameInstanceScript = GD.Load<Script>(gameInstanceScriptPath);
 
                 if (gameInstanceScript == null)
                 {
-                    GD.PrintErr($"Load script from {gameInstanceScriptPath} path failed. Please update \"application/game_framework/game_instance\" option in project settings.");
+                    GD.PrintErr($"Load script from {gameInstanceScriptPath} path failed. Please update \"application/game_framework/game_instance_script\" option in project settings.");
                     return;
                 }
 
@@ -122,27 +122,27 @@ namespace GameFramework.System
 
         public partial void CreateGameMode()
         {
-            Script gameModeScript;
-            if (CurrentLevel != null && CurrentLevel.GameModeScriptOverride != null)
+            GameModeSettings gameModeSettings;
+            if (CurrentLevel != null && CurrentLevel.GameModeSettingsOverride != null)
             {
-                gameModeScript = CurrentLevel.GameModeScriptOverride;
+                gameModeSettings = CurrentLevel.GameModeSettingsOverride;
             }
             else
             {
-                string gameModeScriptPath = ProjectSettings.GetSetting("application/game_framework/default_game_mode").AsString();
-                gameModeScript = GD.Load<Script>(gameModeScriptPath);
+                string gameModeScriptPath = ProjectSettings.GetSetting("application/game_framework/default_game_mode_settings").AsString();
+                gameModeSettings = GD.Load<GameModeSettings>(gameModeScriptPath);
             }
 
-            if (gameModeScript == null)
+            if (gameModeSettings == null)
             {
-                GD.PrintErr($"Load script from {gameModeScript} path failed. Please update \"application/game_framework/default_game_mode\" option in project settings.");
+                GD.PrintErr($"Load Game Mode Settings failed. Please update \"application/game_framework/default_game_mode_settings\" option in project settings.");
                 return;
             }
 
             Node gameModeNode = new Node();
             gameModeNode.Name = "GameMode";
             ulong gameModeNodeId = gameModeNode.GetInstanceId();
-            gameModeNode.SetScript(gameModeScript);
+            gameModeNode.SetScript(gameModeSettings.GameModeScript);
 
             if (GameMode != null)
             {
@@ -151,6 +151,7 @@ namespace GameFramework.System
 
             GameMode = InstanceFromId(gameModeNodeId) as GameMode;
             Root.AddChild(GameMode);
+            GameMode.GameModeSettings = gameModeSettings;
             GameMode.InitGame(this);
         }
     }
