@@ -5,24 +5,22 @@ namespace GodotGameFramework.GameFramework.Assertion
 {
     public static class Assert
     {
-        private static void Fail(string message, string userMessage)
-        {
-            throw new AssertionException(message, userMessage);
-        }
-
         [Conditional("DEBUG")]
         public static void IsTrue(bool condition, string message = "")
         {
             if (!condition)
             {
-                Fail(AssertionMessages.BooleanFailureMessage(expected: true), message);
+                throw new AssertionException(AssertionMessages.BooleanFailureMessage(expected: true), message);
             }
         }
 
         [Conditional("DEBUG")]
         public static void IsFalse(bool condition, string message)
         {
-            if (condition) Fail(AssertionMessages.BooleanFailureMessage(expected: false), message);
+            if (condition)
+            {
+                throw new AssertionException(AssertionMessages.BooleanFailureMessage(expected: false), message);
+            }
         }
 
         [Conditional("DEBUG")]
@@ -30,7 +28,7 @@ namespace GodotGameFramework.GameFramework.Assertion
         {
             if (actual != expected)
             {
-                Fail(AssertionMessages.GetEqualityMessage(actual, expected, expectEqual: true), message);
+                throw new AssertionException(AssertionMessages.GetEqualityMessage(actual, expected, expectEqual: true), message);
             }
         }
 
@@ -39,7 +37,7 @@ namespace GodotGameFramework.GameFramework.Assertion
         {
             if (!comparer.Equals(actual, expected))
             {
-                Fail(AssertionMessages.GetEqualityMessage(actual, expected, expectEqual: true), message);
+                throw new AssertionException(AssertionMessages.GetEqualityMessage(actual, expected, expectEqual: true), message);
             }
         }
 
@@ -48,7 +46,7 @@ namespace GodotGameFramework.GameFramework.Assertion
         {
             if (actual == expected)
             {
-                Fail(AssertionMessages.GetEqualityMessage(actual, expected, expectEqual: false), message);
+                throw new AssertionException(AssertionMessages.GetEqualityMessage(actual, expected, expectEqual: false), message);
             }
         }
 
@@ -57,7 +55,7 @@ namespace GodotGameFramework.GameFramework.Assertion
         {
             if (comparer.Equals(actual, expected))
             {
-                Fail(AssertionMessages.GetEqualityMessage(actual, expected, expectEqual: false), message);
+                throw new AssertionException(AssertionMessages.GetEqualityMessage(actual, expected, expectEqual: false), message);
             }
         }
 
@@ -66,7 +64,7 @@ namespace GodotGameFramework.GameFramework.Assertion
         {
             if (value != null)
             {
-                Fail(AssertionMessages.NullFailureMessage(value, expectNull: true), message);
+                throw new AssertionException(AssertionMessages.NullFailureMessage(value, expectNull: true), message);
             }
         }
 
@@ -75,7 +73,7 @@ namespace GodotGameFramework.GameFramework.Assertion
         {
             if (value == null)
             {
-                Fail(AssertionMessages.NullFailureMessage(value, expectNull: false), message);
+                throw new AssertionException(AssertionMessages.NullFailureMessage(value, expectNull: false), message);
             }
         }
     }
