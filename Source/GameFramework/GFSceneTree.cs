@@ -4,7 +4,7 @@ using Godot.Collections;
 namespace GameFramework.System
 {
     [GlobalClass]
-    public sealed partial class GFSceneTree : SceneTree
+    public partial class GFSceneTree : SceneTree
     {
         private GameInstance gameInstance;
         public GameInstance GameInstance
@@ -27,22 +27,7 @@ namespace GameFramework.System
             private set { currentLevel = value; }
         }
 
-        public override partial void _Initialize();
-
-        public partial Level FindLevel();
-        public T FindLevel<T>() where T : Level => FindLevel() as T;
-
-        public partial Level FindLevel(Node contextNode);
-        public T FindLevel<T>(Node contextNode) where T : Level => FindLevel(contextNode) as T;
-
-        public partial void OpenLevel(string resourcePath);
-
-        public partial void CreateGameMode();
-    }
-
-    public sealed partial class GFSceneTree : SceneTree
-    {
-        public override partial void _Initialize()
+        public override void _Initialize()
         {
             {
                 string gameInstanceScriptPath = ProjectSettings.GetSetting("application/game_framework/game_instance_script").AsString();
@@ -67,7 +52,7 @@ namespace GameFramework.System
             if (CurrentLevel != null) CurrentLevel.InitLevel(this);
         }
 
-        public partial Level FindLevel()
+        public Level FindLevel()
         {
             Array<Node> rootChildren = Root.GetChildren();
 
@@ -82,7 +67,9 @@ namespace GameFramework.System
             return null;
         }
 
-        public partial Level FindLevel(Node contextNode)
+        public T FindLevel<T>() where T : Level => FindLevel() as T;
+
+        public Level FindLevel(Node contextNode)
         {
             if (contextNode != null)
             {
@@ -97,7 +84,9 @@ namespace GameFramework.System
             return null;
         }
 
-        public partial void OpenLevel(string resourcePath)
+        public T FindLevel<T>(Node contextNode) where T : Level => FindLevel(contextNode) as T;
+
+        public void OpenLevel(string resourcePath)
         {
             if (CurrentLevel != null)
             {
@@ -120,7 +109,7 @@ namespace GameFramework.System
             }
         }
 
-        public partial void CreateGameMode()
+        public void CreateGameMode()
         {
             GameModeSettings gameModeSettings;
             if (CurrentLevel != null && CurrentLevel.GameModeSettingsOverride != null)
@@ -155,5 +144,4 @@ namespace GameFramework.System
             GameMode.InitGame(this);
         }
     }
-
 }
