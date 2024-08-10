@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using Godot;
 
-namespace GameFramework.System
+namespace GameFramework.Core
 { 
     public partial class GameInstance : GodotObject
 	{

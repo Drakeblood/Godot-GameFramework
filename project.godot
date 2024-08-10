@@ -22,3 +22,9 @@ game_framework/default_game_mode_settings="res://Content/GameFramework/DefaultGa
 [dotnet]
 
 project/assembly_name="Godot-GameFramework"
+
+[file_customization]
+
+folder_colors={
+"res://Source/": "purple"
+}

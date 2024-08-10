@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace GodotGameFramework.GameFramework.Assertion
+namespace GameFramework.Assertion
 {
     public static class Assert
     {

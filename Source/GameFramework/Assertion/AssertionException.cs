@@ -1,6 +1,6 @@
 using System;
 
-namespace GodotGameFramework.GameFramework.Assertion
+namespace GameFramework.Assertion
 {
     public class AssertionException : Exception
     {

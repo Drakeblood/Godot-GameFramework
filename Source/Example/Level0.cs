@@ -1,6 +1,6 @@
 using Godot;
 
-using GameFramework.System;
+using GameFramework.Core;
 
 namespace Example
 {

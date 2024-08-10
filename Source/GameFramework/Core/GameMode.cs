@@ -1,6 +1,6 @@
 using Godot;
 
-namespace GameFramework.System
+namespace GameFramework.Core
 {
     public partial class GameMode : Node
     {

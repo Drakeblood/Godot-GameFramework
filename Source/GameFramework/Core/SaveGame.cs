@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 
 using Godot;
 
-namespace GameFramework.System
+namespace GameFramework.Core
 {
     public partial class SaveGame : GodotObject, ISerializable
     {

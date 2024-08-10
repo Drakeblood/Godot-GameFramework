@@ -1,7 +1,7 @@
 ﻿using Godot;
 using Godot.Collections;
 
-namespace GameFramework.System
+namespace GameFramework.Core
 {
     public partial class Level : Node
     {

@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
+using static GameFramework.Core.EventDriver;
 
-using static GameFramework.System.EventDriver;
-
-namespace GameFramework.System
+namespace GameFramework.Core
 {
     public static class EventDriver
     {
@@ -19,7 +18,7 @@ namespace GameFramework.System
             }
 
             Listeners[InChannel] += InDelegate;
-            return new ListenerHandle(InChannel, InDelegate );
+            return new ListenerHandle(InChannel, InDelegate);
         }
 
         public static void UnregisterListener(ListenerHandle Handle)

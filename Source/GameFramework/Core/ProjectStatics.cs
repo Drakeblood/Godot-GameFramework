@@ -8,9 +8,7 @@ using System.Security.Cryptography;
 
 using Godot;
 
-using GameFramework.System;
-
-namespace GameFramework.Statics
+namespace GameFramework.Core
 {
     public static class ProjectStatics
     {
@@ -29,12 +27,12 @@ namespace GameFramework.Statics
                 try
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(T));
-                    Stream streamObject = new FileStream(fileName, FileMode.Create, global::System.IO.FileAccess.Write);
+                    Stream streamObject = new FileStream(fileName, FileMode.Create, System.IO.FileAccess.Write);
 
                     if (encrypt)
                     {
                         DES key = DES.Create();
-                        using (CryptoStream cryptoStreamObject = new CryptoStream(streamObject, key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(ProjectStatics.EncryptionKey)), CryptoStreamMode.Write))
+                        using (CryptoStream cryptoStreamObject = new CryptoStream(streamObject, key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(EncryptionKey)), CryptoStreamMode.Write))
                         {
                             serializer.Serialize(cryptoStreamObject, serializableObject);
                         }
@@ -69,13 +67,13 @@ namespace GameFramework.Statics
                 try
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(T));
-                    Stream streamObject = new FileStream(fileName, FileMode.Open, global::System.IO.FileAccess.Read);
+                    Stream streamObject = new FileStream(fileName, FileMode.Open, System.IO.FileAccess.Read);
                     T deserializedObject = default;
 
                     if (encrypt)
                     {
                         DES key = DES.Create();
-                        using (CryptoStream cryptoStreamObject = new CryptoStream(streamObject, key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(ProjectStatics.EncryptionKey)), CryptoStreamMode.Read))
+                        using (CryptoStream cryptoStreamObject = new CryptoStream(streamObject, key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(EncryptionKey)), CryptoStreamMode.Read))
                         {
                             deserializedObject = (T)serializer.Deserialize(cryptoStreamObject);
                         }
@@ -107,7 +105,7 @@ namespace GameFramework.Statics
 
             string savePath = SaveGamesLocation + fileName;
 
-            SerializeObjectToXml<T>(saveGameObject, savePath, encrypt);
+            SerializeObjectToXml(saveGameObject, savePath, encrypt);
         }
 
         public static T LoadGame<T>(string fileName, bool encrypt = true) where T : SaveGame
