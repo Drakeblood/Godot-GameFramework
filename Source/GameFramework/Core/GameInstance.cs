@@ -13,7 +13,7 @@ namespace GameFramework.Core
             private set { sceneTree = value; }
         }
 
-        private List<object> localPlayers;
+        private List<object> localPlayers = new List<object>();
         public List<object> LocalPlayers
         {
             get => localPlayers;

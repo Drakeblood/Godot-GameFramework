@@ -22,11 +22,14 @@ namespace GameFramework.Core
 
         public virtual void CreatePlayer()
         {
-            if (GameModeSettings.PlayerScene == null) return;//TO DO add log here
-
+            if (GameModeSettings.PlayerScene == null) return;
+            
+            gfSceneTree.CurrentLevel.PreparePlayerStartsLocation();
             if (gfSceneTree.CurrentLevel.PlayerStartsLocations.Count > 0)
             {
                 Node player = GameModeSettings.PlayerScene.Instantiate();
+                gfSceneTree.GameInstance.LocalPlayers.Add(player);
+                gfSceneTree.CurrentLevel.AddChild(player);
 
                 if (player is Node2D player2D)
                 {

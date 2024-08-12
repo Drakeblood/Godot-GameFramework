@@ -10,6 +10,11 @@ namespace GameFramework.Core
 
         public virtual void InitLevel(GFSceneTree sceneTree)
         {
+
+        }
+
+        public void PreparePlayerStartsLocation()
+        {
             PlayerStartsLocations.Resize(playerStartsNodePathes.Count);
             PlayerStartsRotations.Resize(playerStartsNodePathes.Count);
 
