@@ -3,10 +3,12 @@ using System.IO;
 using System.Collections.Generic;
 using Godot;
 using GameFramework.Assertion;
+using System.Security.Cryptography;
 
 namespace GameFramework.GameplayTags
 {
-    public static class GameplayTagsManager
+    [Tool]
+    public partial class GameplayTagsManager : EditorScript
     {
         private static string[] tagsNames;
         public static string[] TagsNames => tagsNames;
@@ -14,32 +16,31 @@ namespace GameFramework.GameplayTags
         private static GameplayTag[] tags = new GameplayTag[0];
         private static Tuple<GameplayTag, GameplayTag[]>[] tagsWithSubTags = new Tuple<GameplayTag, GameplayTag[]>[0];
 
-#if TOOLS
-        static GameplayTagsManager()
-        {
-            //ConfigFile tags = new ConfigFile();
-            //Assert.AreEqual(tags.Load("res://Content/GameFramework/DefaultGameplayTags.ini"), Error.Ok, "Could not load DefaultGameplayTags.ini file");
+//#if TOOLS
+//        static GameplayTagsManager()
+//        {
+//            ConfigFile tags = new ConfigFile();
+//            Assert.AreEqual(tags.Load("res://Content/GameFramework/DefaultGameplayTags.ini"), Error.Ok, "Could not load DefaultGameplayTags.ini file");
 
-            //tagsNames = tags.GetSectionKeys("GameplayTagList");
+//            tagsNames = tags.GetSectionKeys("GameplayTagList");
+//            InitializeTags();
+//        }
+//#else
+//        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+//        private static void LoadAsset()
+//        {
+//            UnityEngine.TextAsset TagsAsset = UnityEngine.Resources.Load<UnityEngine.TextAsset>(ProjectStatics.GameplayTagsAssetPath);
+//            if (TagsAsset == null) return;
 
-            //InitializeTags();
-        }
-#else
-        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void LoadAsset()
-        {
-            UnityEngine.TextAsset TagsAsset = UnityEngine.Resources.Load<UnityEngine.TextAsset>(ProjectStatics.GameplayTagsAssetPath);
-            if (TagsAsset == null) return;
+//            tagsNames = TagsAsset.text.Split('\n');
 
-            tagsNames = TagsAsset.text.Split('\n');
-
-            for (int i = 0; i < tagsNames.Length; i++)
-            {
-                tagsNames[i] = tagsNames[i].Split(',')[0];
-            }
-            InitializeTags();
-        }
-#endif
+//            for (int i = 0; i < tagsNames.Length; i++)
+//            {
+//                tagsNames[i] = tagsNames[i].Split(',')[0];
+//            }
+//            InitializeTags();
+//        }
+//#endif
 
         private static void InitializeTags()
         {
