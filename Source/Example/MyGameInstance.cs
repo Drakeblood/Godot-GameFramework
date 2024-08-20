@@ -12,5 +12,13 @@ namespace Example
 
             GD.Print("MyGameInstance.Init");
         }
+
+        protected override void InitTreeAvailable()
+        {
+            base.InitTreeAvailable();
+
+            GD.Print("MyGameInstance.InitTreeAvailable");
+            //SceneTree.Root.Size = DisplayServer.ScreenGetSize();
+        }
     }
 }

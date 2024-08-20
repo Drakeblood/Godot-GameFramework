@@ -1,6 +1,8 @@
 using Godot;
 using Godot.Collections;
 
+using GameFramework.Assertion;
+
 namespace GameFramework.Core
 {
     [GlobalClass]
@@ -33,11 +35,7 @@ namespace GameFramework.Core
                 string gameInstanceScriptPath = ProjectSettings.GetSetting("application/game_framework/game_instance_script").AsString();
                 Script gameInstanceScript = GD.Load<Script>(gameInstanceScriptPath);
 
-                if (gameInstanceScript == null)
-                {
-                    GD.PrintErr($"Load script from {gameInstanceScriptPath} path failed. Please update \"application/game_framework/game_instance_script\" option in project settings.");
-                    return;
-                }
+                Assert.IsNotNull(gameInstanceScript, $"Load script from {gameInstanceScriptPath} path failed. Please update \"application/game_framework/game_instance_script\" option in project settings.");
 
                 GodotObject gameInstanceGO = new GodotObject();
                 ulong gameInstanceId = gameInstanceGO.GetInstanceId();
@@ -122,11 +120,7 @@ namespace GameFramework.Core
                 gameModeSettings = GD.Load<GameModeSettings>(gameModeScriptPath);
             }
 
-            if (gameModeSettings == null)
-            {
-                GD.PrintErr($"Load Game Mode Settings failed. Please update \"application/game_framework/default_game_mode_settings\" option in project settings.");
-                return;
-            }
+            Assert.IsNotNull(gameModeSettings, $"Load Game Mode Settings failed. Please update \"application/game_framework/default_game_mode_settings\" option in project settings.");
 
             Node gameModeNode = new Node();
             gameModeNode.Name = "GameMode";

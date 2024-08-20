@@ -11,6 +11,8 @@ namespace Example
             base.InitGame(sceneTree);
 
             GD.Print("MyGameMode.Init");
+
+            sceneTree.Root.Size = DisplayServer.ScreenGetSize();
         }
     }
 }

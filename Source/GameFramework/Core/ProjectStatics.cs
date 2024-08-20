@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 
 using Godot;
+using GameFramework.Assertion;
 
 namespace GameFramework.Core
 {
@@ -118,11 +119,7 @@ namespace GameFramework.Core
         public static T GetGameInstance<T>(SceneTree sceneTree) where T : GameInstance
         {
             GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
-            if (gfSceneTree == null)
-            {
-                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
-                return null;
-            }
+            Assert.IsNotNull(gfSceneTree, "GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
 
             return gfSceneTree.GameInstance as T;
         }
@@ -130,11 +127,7 @@ namespace GameFramework.Core
         public static T GetGameMode<T>(SceneTree sceneTree) where T : GameMode
         {
             GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
-            if (gfSceneTree == null)
-            {
-                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
-                return null;
-            }
+            Assert.IsNotNull(gfSceneTree, "GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
 
             return gfSceneTree.GameMode as T;
         }
@@ -142,11 +135,7 @@ namespace GameFramework.Core
         public static T GetLevel<T>(SceneTree sceneTree) where T : Level
         {
             GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
-            if (gfSceneTree == null)
-            {
-                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
-                return null;
-            }
+            Assert.IsNotNull(gfSceneTree, "GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
 
             return gfSceneTree.CurrentLevel as T;
         }
@@ -154,11 +143,7 @@ namespace GameFramework.Core
         public static void OpenLevel(SceneTree sceneTree, string resourcePath)
         {
             GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
-            if (gfSceneTree == null)
-            {
-                GD.PrintErr("GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
-                return;
-            }
+            Assert.IsNotNull(gfSceneTree, "GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
 
             gfSceneTree.OpenLevel(resourcePath);
         }

@@ -7,8 +7,8 @@ using System.Security.Cryptography;
 
 namespace GameFramework.GameplayTags
 {
-    [Tool]
-    public partial class GameplayTagsManager : EditorScript
+    //[Tool]
+    public partial class GameplayTagsManager// : EditorScript
     {
         private static string[] tagsNames;
         public static string[] TagsNames => tagsNames;

@@ -25,6 +25,13 @@ namespace GameFramework.Core
         public virtual void Init(GFSceneTree sceneTree)
         {
             SceneTree = sceneTree;
+            SceneTree.TreeChanged += InitTreeAvailable;
+        }
+
+        ///<summary> Called during game initialization when SceneTree is set. </summary>
+        protected virtual void InitTreeAvailable()
+        {
+            SceneTree.TreeChanged -= InitTreeAvailable;
         }
     }
 }
