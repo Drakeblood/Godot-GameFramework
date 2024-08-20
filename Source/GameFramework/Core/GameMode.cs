@@ -16,6 +16,7 @@ namespace GameFramework.Core
         public virtual void InitGame(GFSceneTree sceneTree)
         {
             gfSceneTree = sceneTree;
+            gfSceneTree.GameInstance.Heroes.Clear();
 
             CreatePlayer();
         }
@@ -28,7 +29,7 @@ namespace GameFramework.Core
             if (gfSceneTree.CurrentLevel.PlayerStartsLocations.Count > 0)
             {
                 Node player = GameModeSettings.PlayerScene.Instantiate();
-                gfSceneTree.GameInstance.LocalPlayers.Add(player);
+                gfSceneTree.GameInstance.Heroes.Add(player);
                 gfSceneTree.CurrentLevel.AddChild(player);
 
                 if (player is Node2D player2D)

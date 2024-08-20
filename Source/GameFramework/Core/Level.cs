@@ -10,7 +10,7 @@ namespace GameFramework.Core
 
         public virtual void InitLevel(GFSceneTree sceneTree)
         {
-
+            
         }
 
         public void PreparePlayerStartsLocation()

@@ -13,11 +13,11 @@ namespace GameFramework.Core
             private set { sceneTree = value; }
         }
 
-        private List<object> localPlayers = new List<object>();
-        public List<object> LocalPlayers
+        private List<object> heroes = new List<object>();
+        public List<object> Heroes
         {
-            get => localPlayers;
-            private set { localPlayers = value; }
+            get => heroes;
+            private set { heroes = value; }
         }
 
         public GameInstance() { }
