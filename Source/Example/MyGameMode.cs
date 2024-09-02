@@ -12,5 +12,10 @@ namespace Example
 
             GD.Print("MyGameMode.Init");
         }
+
+        public override void _EnterTree()
+        {
+            GD.Print("MyGameMode._EnterTree");
+        }
     }
 }

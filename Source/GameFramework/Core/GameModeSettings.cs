@@ -6,9 +6,12 @@ namespace GameFramework.Core
     public partial class GameModeSettings : Resource
     {
         [Export]
-        public Script GameModeScript;
+        public CSharpScript GameModeScript;
 
         [Export]
-        public PackedScene PlayerScene;
+        public PackedScene PawnScene;
+
+        [Export]
+        public PackedScene PlayerControllerScene;
     }
 }

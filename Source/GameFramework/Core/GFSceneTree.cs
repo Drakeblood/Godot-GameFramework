@@ -8,6 +8,8 @@ namespace GameFramework.Core
     [GlobalClass]
     public partial class GFSceneTree : SceneTree
     {
+        private static readonly StringName GameModeNodeName = new StringName("GameMode");
+
         private GameInstance gameInstance;
         public GameInstance GameInstance
         {
@@ -33,21 +35,23 @@ namespace GameFramework.Core
         {
             {
                 string gameInstanceScriptPath = ProjectSettings.GetSetting("application/game_framework/game_instance_script").AsString();
-                Script gameInstanceScript = GD.Load<Script>(gameInstanceScriptPath);
+                CSharpScript gameInstanceScript = GD.Load<CSharpScript>(gameInstanceScriptPath);
 
                 Assert.IsNotNull(gameInstanceScript, $"Load script from {gameInstanceScriptPath} path failed. Please update \"application/game_framework/game_instance_script\" option in project settings.");
 
-                GodotObject gameInstanceGO = new GodotObject();
-                ulong gameInstanceId = gameInstanceGO.GetInstanceId();
-                gameInstanceGO.SetScript(gameInstanceScript);
-
-                GameInstance = InstanceFromId(gameInstanceId) as GameInstance;
+                GameInstance = gameInstanceScript.New().AsGodotObject() as GameInstance;
                 GameInstance.Init(this);
+                GameInstance.CreateLocalPlayer();
             }
 
             CurrentLevel = FindLevel();
             CreateGameMode();
-            if (CurrentLevel != null) CurrentLevel.InitLevel(this);
+
+            if (CurrentLevel != null)
+            {
+                CurrentLevel.InitLevel(this);
+                GameInstance.LoginLocalPlayers();
+            }
         }
 
         public Level FindLevel()
@@ -101,7 +105,7 @@ namespace GameFramework.Core
 
                     CreateGameMode();
                     CurrentLevel.InitLevel(this);
-
+                    GameInstance.LoginLocalPlayers();
                     Root.AddChild(newLevel);
                 }
             }
@@ -122,20 +126,16 @@ namespace GameFramework.Core
 
             Assert.IsNotNull(gameModeSettings, $"Load Game Mode Settings failed. Please update \"application/game_framework/default_game_mode_settings\" option in project settings.");
 
-            Node gameModeNode = new Node();
-            gameModeNode.Name = "GameMode";
-            ulong gameModeNodeId = gameModeNode.GetInstanceId();
-            gameModeNode.SetScript(gameModeSettings.GameModeScript);
-
             if (GameMode != null)
             {
                 GameMode.Free();
             }
 
-            GameMode = InstanceFromId(gameModeNodeId) as GameMode;
-            Root.AddChild(GameMode);
+            GameMode = gameModeSettings.GameModeScript.New().AsGodotObject() as GameMode;
+            GameMode.Name = GameModeNodeName;
             GameMode.GameModeSettings = gameModeSettings;
             GameMode.InitGame(this);
+            Root.AddChild(GameMode);
         }
     }
 }

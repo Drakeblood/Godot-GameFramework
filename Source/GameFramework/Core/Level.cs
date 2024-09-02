@@ -8,6 +8,9 @@ namespace GameFramework.Core
         [Export]
         public GameModeSettings GameModeSettingsOverride;
 
+        /// <summary>
+        /// Called before being added to tree.
+        /// </summary>
         public virtual void InitLevel(GFSceneTree sceneTree)
         {
             
