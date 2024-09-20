@@ -32,7 +32,7 @@ namespace GameFramework.AbilitySystem
         {
             Assert.IsNotNull(abilityTemplate, "Ability template is not vaild");
 
-            GameplayAbility ability = abilityTemplate.ShallowCopy();
+            GameplayAbility ability = abilityTemplate.Duplicate() as GameplayAbility;
             ActivatableAbilities.Add(ability);
 
             //if (ability.AbilityDefinition.InputActionReference != null)

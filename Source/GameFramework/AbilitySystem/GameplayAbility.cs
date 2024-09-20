@@ -7,7 +7,7 @@ using GameFramework.Assertion;
 
 namespace GameFramework.AbilitySystem
 {
-    public partial class GameplayAbility : GodotObject
+    public partial class GameplayAbility : Resource
     {
         public AbilitySystemComponent AbilitySystemComponent { get; private set; }
 
@@ -134,10 +134,5 @@ namespace GameFramework.AbilitySystem
 
         public virtual void InputPressed() { }
         public virtual void InputReleased() { }
-
-        public GameplayAbility ShallowCopy()
-        {
-            return MemberwiseClone() as GameplayAbility;
-        }
     }
 }
