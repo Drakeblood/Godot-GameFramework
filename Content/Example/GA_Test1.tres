@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dyvobffq23b8k"]
+
+[ext_resource type="Script" path="res://Source/Example/AbilitySystem/GA_Test1.cs" id="1_d28w8"]
+
+[resource]
+script = ExtResource("1_d28w8")
+a = 50
+AbilityTags = null
+CancelAbilitiesWithTag = null
+BlockAbilitiesWithTag = null
+ActivationOwnedTags = null
+ActivationRequiredTags = null
+ActivationBlockedTags = null

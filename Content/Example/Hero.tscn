@@ -1,0 +1,20 @@
+[gd_scene load_steps=6 format=3 uid="uid://dpbe7vguyo23h"]
+
+[ext_resource type="Script" path="res://Source/Example/Hero.cs" id="1_7yv3s"]
+[ext_resource type="Texture2D" uid="uid://plxqvwcqsd2o" path="res://icon.svg" id="1_s0bb6"]
+[ext_resource type="Script" path="res://Source/GameFramework/AbilitySystem/AbilitySystemComponent.cs" id="2_v8ooj"]
+[ext_resource type="Resource" uid="uid://dyvobffq23b8k" path="res://Content/Example/GA_Test1.tres" id="3_4xvfx"]
+[ext_resource type="Script" path="res://Source/GameFramework/Core/Pawn.cs" id="4_2wii5"]
+
+[node name="Hero" type="Node2D"]
+script = ExtResource("1_7yv3s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_s0bb6")
+
+[node name="ASC" type="Node" parent="."]
+script = ExtResource("2_v8ooj")
+startupAbilities = [ExtResource("3_4xvfx")]
+
+[node name="Pawn" type="Node" parent="."]
+script = ExtResource("4_2wii5")

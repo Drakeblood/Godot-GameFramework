@@ -2,7 +2,6 @@ using System.Collections;
 
 using Godot;
 
-using GameFramework.Core;
 using GameFramework.GameplayTags;
 using GameFramework.Assertion;
 
@@ -76,7 +75,7 @@ namespace GameFramework.AbilitySystem
         public virtual bool CanActivateAbility()
         {
             if (IsActive) return false;
-            Assert.IsNull(AbilitySystemComponent, "OwningAbilityManager is not valid");
+            Assert.IsNotNull(AbilitySystemComponent, "OwningAbilityManager is not valid");
 
             if (GameplayTag.HasAny(AbilitySystemComponent.GetBlockedAbilityTags(), AbilityTags)) return false;
 
@@ -93,7 +92,7 @@ namespace GameFramework.AbilitySystem
 
         public virtual void ActivateAbility()
         {
-            Assert.IsNull(AbilitySystemComponent, "OwningAbilityManager is not valid");
+            Assert.IsNotNull(AbilitySystemComponent, "OwningAbilityManager is not valid");
 
             for (int i = 0; i < ActivationOwnedTags.Length; i++)
             {
@@ -112,7 +111,7 @@ namespace GameFramework.AbilitySystem
 
         public virtual void EndAbility(bool wasCanceled = false)
         {
-            Assert.IsNull(AbilitySystemComponent, "OwningAbilityManager is not valid");
+            Assert.IsNotNull(AbilitySystemComponent, "OwningAbilityManager is not valid");
             IsActive = false;
 
             for (int i = 0; i < ActivationOwnedTags.Length; i++)

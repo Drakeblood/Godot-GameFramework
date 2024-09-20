@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 
-using GameFramework.Core;
 using GameFramework.GameplayTags;
 using GameFramework.Assertion;
 
@@ -19,7 +18,7 @@ namespace GameFramework.AbilitySystem
         protected GameplayTagCountContainer GameplayTagCountContainer = new GameplayTagCountContainer();
         protected GameplayTagCountContainer BlockedAbilityTags = new GameplayTagCountContainer();
 
-        private void Awake()
+        public override void _Ready()
         {
             for (int i = 0; i < startupAbilities.Count; i++)
             {
