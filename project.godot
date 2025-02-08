@@ -26,7 +26,7 @@ project/assembly_name="Godot-GameFramework"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gameframeworkeditorplugin/plugin.cfg")
+enabled=PackedStringArray("res://addons/GameFramework/plugin.cfg")
 
 [file_customization]
 

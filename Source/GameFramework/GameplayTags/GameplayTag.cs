@@ -4,7 +4,8 @@ using Godot;
 
 namespace GameFramework.GameplayTags
 {
-    public partial class GameplayTag : GodotObject
+    [GlobalClass]
+    public partial class GameplayTag : Resource
     {
         [Export]
         private StringName tagName;

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_r0dl4")
 a = 25
-AbilityTags = null
+AbilityTags = Array[Object]([])
 CancelAbilitiesWithTag = null
 BlockAbilitiesWithTag = null
 ActivationOwnedTags = null
