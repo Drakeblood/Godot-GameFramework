@@ -11,3 +11,4 @@ BlockAbilitiesWithTag = null
 ActivationOwnedTags = null
 ActivationRequiredTags = null
 ActivationBlockedTags = null
+InputActionName = null

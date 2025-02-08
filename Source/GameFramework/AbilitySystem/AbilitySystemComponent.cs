@@ -35,13 +35,6 @@ namespace GameFramework.AbilitySystem
             GameplayAbility ability = abilityTemplate.Duplicate() as GameplayAbility;
             ActivatableAbilities.Add(ability);
 
-            //if (ability.AbilityDefinition.InputActionReference != null)
-            //{
-            //    ability.AbilityDefinition.InputActionReference.action.started += AbilityInputPressed;
-            //    ability.AbilityDefinition.InputActionReference.action.canceled += AbilityInputReleased;
-            //    ability.AbilityDefinition.InputActionReference.action.Enable();
-            //}
-
             ability.SetupAbility(this, sourceObject);
             ability.OnGiveAbility();
         }
@@ -62,13 +55,6 @@ namespace GameFramework.AbilitySystem
                         };
                         return;
                     }
-
-                    //if (ActivatableAbilities[i].AbilityDefinition.InputActionReference != null)
-                    //{
-                    //    ActivatableAbilities[i].AbilityDefinition.InputActionReference.action.started -= AbilityInputPressed;
-                    //    ActivatableAbilities[i].AbilityDefinition.InputActionReference.action.canceled -= AbilityInputReleased;
-                    //    ActivatableAbilities[i].AbilityDefinition.InputActionReference.action.Disable();
-                    //}
 
                     ActivatableAbilities.RemoveAt(i);
                     return;
@@ -137,41 +123,40 @@ namespace GameFramework.AbilitySystem
 
         #region Input
 
-        //public void AbilityInputPressed(CallbackContext callbackContext)
-        //{
-        //    for (int i = 0; i < ActivatableAbilities.Count; i++)
-        //    {
-        //        if (ActivatableAbilities[i].InputActionReference.action == callbackContext.action)
-        //        {
-        //            ActivatableAbilities[i].IsInputPressed = true;
+        public override void _UnhandledInput(InputEvent @event)
+        {
+            if (@event is InputEventAction inputEventAction)
+            {
+                for (int i = 0; i < ActivatableAbilities.Count; i++)
+                {
+                    if (ActivatableAbilities[i].InputActionName == inputEventAction.Action)
+                    {
+                        if (Input.IsActionJustPressed(ActivatableAbilities[i].InputActionName))
+                        {
+                            ActivatableAbilities[i].IsInputPressed = true;
 
-        //            if (ActivatableAbilities[i].IsActive)
-        //            {
-        //                ActivatableAbilities[i].InputPressed();
-        //            }
-        //            else
-        //            {
-        //                TryActivateAbility(ActivatableAbilities[i].GetType());
-        //            }
-        //        }
-        //    }
-        //}
+                            if (ActivatableAbilities[i].IsActive)
+                            {
+                                ActivatableAbilities[i].InputPressed();
+                            }
+                            else
+                            {
+                                TryActivateAbility(ActivatableAbilities[i].GetType());
+                            }
+                        }
+                        else if (Input.IsActionJustReleased(ActivatableAbilities[i].InputActionName))
+                        {
+                            ActivatableAbilities[i].IsInputPressed = false;
 
-        //public void AbilityInputReleased(CallbackContext callbackContext)
-        //{
-        //    for (int i = 0; i < ActivatableAbilities.Count; i++)
-        //    {
-        //        if (ActivatableAbilities[i].InputActionReference.action == callbackContext.action)
-        //        {
-        //            ActivatableAbilities[i].IsInputPressed = false;
-
-        //            if (ActivatableAbilities[i].IsActive)
-        //            {
-        //                ActivatableAbilities[i].InputReleased();
-        //            }
-        //        }
-        //    }
-        //}
+                            if (ActivatableAbilities[i].IsActive)
+                            {
+                                ActivatableAbilities[i].InputReleased();
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         #endregion
     }

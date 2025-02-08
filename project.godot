@@ -18,10 +18,15 @@ run/max_fps=60
 config/icon="res://icon.svg"
 game_framework/game_instance_script="res://Source/Example/MyGameInstance.cs"
 game_framework/default_game_mode_settings="res://Content/GameFramework/DefaultGameModeSettings.tres"
+game_framework/gameplay_tags_files=PackedStringArray("res://Content/GameFramework/DefaultGameplayTags.ini")
 
 [dotnet]
 
 project/assembly_name="Godot-GameFramework"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gameframeworkeditorplugin/plugin.cfg")
 
 [file_customization]
 

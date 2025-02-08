@@ -1,22 +1,20 @@
-using Godot;
-using System;
 using System.Collections.Generic;
+
+using Godot;
 
 namespace GameFramework.GameplayTags
 {
     public partial class GameplayTag : GodotObject
     {
         [Export]
-        private string tagName;
-        public string TagName { get => tagName; }
+        private StringName tagName;
+        public StringName TagName { get => tagName; }
 
-        private int tagId = -1;
-        public int TagId { get => tagId; }
+        public GameplayTag() { }
 
-        internal GameplayTag(string stateName, int stateId)
+        public GameplayTag(StringName tagName)
         {
-            this.tagName = stateName;
-            this.tagId = stateId;
+            this.tagName = tagName;
         }
 
         /// <summary>
@@ -24,18 +22,18 @@ namespace GameFramework.GameplayTags
         /// </summary>
         public bool MatchesTag(GameplayTag tagToCheck)
         {
-            GameplayTag[] separatedTag = GameplayTagsManager.GetSeparatedTag(this);
-            GameplayTag[] separatedTagToCheck = GameplayTagsManager.GetSeparatedTag(tagToCheck);
+            List<GameplayTag> separatedTag = GameplayTagsManager.Instance.GetSeparatedTag(this);
+            List<GameplayTag> separatedTagToCheck = GameplayTagsManager.Instance.GetSeparatedTag(tagToCheck);
 
-            if (separatedTag.Length == separatedTagToCheck.Length) return this == tagToCheck;
-            if (separatedTagToCheck.Length > separatedTag.Length) return false;
+            if (separatedTag.Count == separatedTagToCheck.Count) return this == tagToCheck;
+            if (separatedTagToCheck.Count > separatedTag.Count) return false;
 
-            for (int i = 0; i < separatedTag.Length && i < separatedTagToCheck.Length; i++)
+            for (int i = 0; i < separatedTag.Count && i < separatedTagToCheck.Count; i++)
             {
                 if (separatedTag[i] != separatedTagToCheck[i]) return false;
             }
 
-            if (separatedTagToCheck.Length == 0 && separatedTag.Length > 0) return separatedTag[0] == tagToCheck;
+            if (separatedTagToCheck.Count == 0 && separatedTag.Count > 0) return separatedTag[0] == tagToCheck;
             
             return true;
         }
@@ -73,7 +71,7 @@ namespace GameFramework.GameplayTags
             GameplayTag other = obj as GameplayTag;
             if (other == null) return base.Equals(obj);
 
-            return tagId == other.tagId;
+            return tagName == other.tagName;
         }
 
         public static bool Equals(GameplayTag x, GameplayTag y)
@@ -86,32 +84,7 @@ namespace GameFramework.GameplayTags
         public static bool operator ==(GameplayTag x, GameplayTag y) => Equals(x, y);
         public static bool operator !=(GameplayTag x, GameplayTag y) => !Equals(x, y);
 
-        public override int GetHashCode() => tagId;
+        public override int GetHashCode() => tagName.GetHashCode();
         public override string ToString() => tagName;
-
-        public void OnBeforeSerialize()
-        {
-            
-        }
-
-        public void OnAfterDeserialize()
-        {
-            if(tagName == null || tagName == "") return;
-
-            GameplayTag tag;           
-            if (TagId != -1)
-            {
-                tag = GameplayTagsManager.GetTag(tagId);
-                if(tag != null)
-                {
-                    if (tag.tagName == tagName) return;
-                }
-            }
-            
-            tag = GameplayTagsManager.GetTag(tagName);
-            if (tag == null) return;
-            
-            tagId = tag.tagId;
-        }
     }
 }

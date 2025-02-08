@@ -8,6 +8,8 @@
 
 [node name="Hero" type="Node2D"]
 script = ExtResource("1_7yv3s")
+x = Object(Object,"script":Resource("res://Source/GameFramework/GameplayTags/GameplayTag.cs"),"tagName":&"Character.Dying")
+
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_s0bb6")

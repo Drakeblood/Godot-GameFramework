@@ -2,14 +2,13 @@ using Godot;
 using Godot.Collections;
 
 using GameFramework.Assertion;
+using GameFramework.GameplayTags;
 
 namespace GameFramework.Core
 {
     [GlobalClass]
     public partial class GFSceneTree : SceneTree
     {
-        private static readonly StringName GameModeNodeName = new StringName("GameMode");
-
         private GameInstance gameInstance;
         public GameInstance GameInstance
         {
@@ -33,7 +32,12 @@ namespace GameFramework.Core
 
         public override void _Initialize()
         {
-            {
+
+            {//Initialize singletons
+                GameplayTagsManager gameplayTagsManager = GameplayTagsManager.Instance;
+            }
+
+            {//Initialize GameInstance object
                 string gameInstanceScriptPath = ProjectSettings.GetSetting("application/game_framework/game_instance_script").AsString();
                 CSharpScript gameInstanceScript = GD.Load<CSharpScript>(gameInstanceScriptPath);
 
@@ -132,7 +136,7 @@ namespace GameFramework.Core
             }
 
             GameMode = gameModeSettings.GameModeScript.New().AsGodotObject() as GameMode;
-            GameMode.Name = GameModeNodeName;
+            GameMode.Name = "GameMode";
             GameMode.GameModeSettings = gameModeSettings;
             GameMode.InitGame(this);
             Root.AddChild(GameMode);

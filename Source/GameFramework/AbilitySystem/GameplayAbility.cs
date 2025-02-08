@@ -20,35 +20,66 @@ namespace GameFramework.AbilitySystem
 
         [ExportCategory("Tags")]
 
-        [Export]//[Tooltip("GameplayTags that the GameplayAbility owns. These are just GameplayTags to describe the GameplayAbility.")]
+        /// <summary>
+        /// GameplayTags that the GameplayAbility owns. These are just GameplayTags to describe the GameplayAbility.
+        /// </summary>
+        [Export]
         public GameplayTag[] AbilityTags;
 
-        [Export]//[Tooltip("Other GameplayAbilities that have these GameplayTags in their Ability Tags will be canceled when this GameplayAbility is activated.")]
+        /// <summary>
+        /// Other GameplayAbilities that have these GameplayTags in their Ability Tags will be canceled when this GameplayAbility is activated.
+        /// </summary>
+        [Export]
         public GameplayTag[] CancelAbilitiesWithTag;
 
-        [Export]//[Tooltip("Other GameplayAbilities that have these GameplayTags in their Ability Tags are blocked from activating while this GameplayAbility is active.")]
+        /// <summary>
+        /// Other GameplayAbilities that have these GameplayTags in their Ability Tags are blocked from activating while this GameplayAbility is active.
+        /// </summary>
+        [Export]
         public GameplayTag[] BlockAbilitiesWithTag;
 
-        [Export]//[Tooltip("These GameplayTags are given to the GameplayAbility's owner while this GameplayAbility is active.")]
+        /// <summary>
+        /// These GameplayTags are given to the GameplayAbility's owner while this GameplayAbility is active.
+        /// </summary>
+        [Export]
         public GameplayTag[] ActivationOwnedTags;
 
-        [Export]//[Tooltip("This GameplayAbility can only be activated if the owner has all of these GameplayTags.")]
+        /// <summary>
+        /// This GameplayAbility can only be activated if the owner has all of these GameplayTags.
+        /// </summary>
+        [Export]
         public GameplayTag[] ActivationRequiredTags;
 
-        [Export]//[Tooltip("This GameplayAbility cannot be activated if the owner has any of these GameplayTags.")]
+        /// <summary>
+        /// This GameplayAbility cannot be activated if the owner has any of these GameplayTags.
+        /// </summary>
+        [Export]
         public GameplayTag[] ActivationBlockedTags;
 
-        //[Tooltip("This GameplayAbility can only be activated if the Source has all of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.")]
-        //[GameplayTag] public GameplayTag[] SourceRequiredTags;
+        /// <summary>
+        /// This GameplayAbility can only be activated if the Source has all of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.
+        /// </summary>
+        //public GameplayTag[] SourceRequiredTags;
 
-        //[Tooltip("This GameplayAbility cannot be activated if the Source has any of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.")]
-        //[GameplayTag] public GameplayTag[] SourceBlockedTags;
+        /// <summary>
+        /// This GameplayAbility cannot be activated if the Source has any of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.
+        /// </summary>
+        //public GameplayTag[] SourceBlockedTags;
 
-        //[Tooltip("This GameplayAbility can only be activated if the Target has all of these GameplayTags. The Target GameplayTags are only set if the GameplayAbility is triggered by an event.")]
-        //[GameplayTag] public GameplayTag[] TargetRequiredTags;
+        /// <summary>
+        /// This GameplayAbility can only be activated if the Target has all of these GameplayTags. The Target GameplayTags are only set if the GameplayAbility is triggered by an event.
+        /// </summary>
+        //public GameplayTag[] TargetRequiredTags;
 
-        //[Tooltip("This GameplayAbility cannot be activated if the Target has any of these GameplayTags. The Target GameplayTags are only set if the GameplayAbility is triggered by an event.")]
-        //[GameplayTag] public GameplayTag[] TargetBlockedTags;
+        /// <summary>
+        /// This GameplayAbility cannot be activated if the Target has any of these GameplayTags. The Target GameplayTags are only set if the GameplayAbility is triggered by an event.
+        /// </summary>
+        //public GameplayTag[] TargetBlockedTags;
+
+        [ExportCategory("Input")]
+
+        [Export]
+        public StringName InputActionName { get; private set; }
 
         //private List<Coroutine> coroutines = new List<Coroutine>();
 
