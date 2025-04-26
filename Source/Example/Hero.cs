@@ -1,11 +1,15 @@
 using GameFramework.AbilitySystem;
 using GameFramework.GameplayTags;
 using Godot;
+using Godot.Collections;
 
 public partial class Hero : Node2D
 {
-    [Export]
-    private GameplayTag x = GameplayTagsManager.Instance.GetTag("Character");
+    [Export] private GameplayTag x = GameplayTagsManager.Instance.GetTag("Character");
+
+    [Export] private GameplayTagContainer tagContainer = new GameplayTagContainer();
+
+    [Export] private Array<string> huC = new Array<string>();
 
     public override void _Ready()
     {

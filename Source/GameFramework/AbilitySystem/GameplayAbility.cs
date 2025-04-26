@@ -59,7 +59,7 @@ namespace GameFramework.AbilitySystem
         /// <summary>
         /// This GameplayAbility can only be activated if the Source has all of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.
         /// </summary>
-        //public GameplayTag[] SourceRequiredTags;
+        [Export] public GameplayTagContainer SourceRequiredTags = new GameplayTagContainer();
 
         /// <summary>
         /// This GameplayAbility cannot be activated if the Source has any of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.

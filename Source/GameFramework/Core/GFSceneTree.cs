@@ -132,7 +132,7 @@ namespace GameFramework.Core
 
             if (GameMode != null)
             {
-                GameMode.Free();
+                GameMode.QueueFree();
             }
 
             GameMode = gameModeSettings.GameModeScript.New().AsGodotObject() as GameMode;

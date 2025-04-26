@@ -14,11 +14,16 @@ public partial class GameFrameworkEditorInspector : EditorInspectorPlugin
         {
             if (@object.Get(name).AsGodotObject() is Resource resource)
             {
-                if (resource.GetScript().AsGodotObject() is CSharpScript script)
+                if (resource.GetScript().AsGodotObject() is Script script)
                 {
                     if (script.GetGlobalName() == "GameplayTag")
                     {
                         AddPropertyEditor(name, new GameplayTagEditorProperty());
+                        return true;
+                    }
+                    else if (script.GetGlobalName() == "GameplayTagContainer")
+                    {
+                        AddPropertyEditor(name, new GameplayTagContainerEditorProperty());
                         return true;
                     }
                 }
