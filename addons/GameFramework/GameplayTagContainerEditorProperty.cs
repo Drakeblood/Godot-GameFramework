@@ -38,24 +38,19 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
         for (int i = 0; i < currentValue.GameplayTags.Count; i++)
         {
             GameplayTagOptionButton optionButton = GetOptionButton();
-
-            optionButton.ItemSelected += OnItemSelected;
             optionButton.Select(GameplayTagEditorProperty.TagNames[currentValue.GameplayTags[i].TagName]);
-
-            Button deleteButton = new Button();
-            deleteButton.Text = " - ";
-            deleteButton.Pressed += DeleteButton_Pressed;
-
-            HBoxContainer hBoxContainer = new HBoxContainer();
-            hBoxContainer.AddChild(optionButton);
-            hBoxContainer.AddChild(deleteButton);
-
-            itemsContainer.AddChild(hBoxContainer);
+            SetupRowAttachment(optionButton);
         }
     }
 
     public override void _UpdateProperty()
     {
+        GD.Print("=====================");
+        for (int i = 0; i < currentValue.GameplayTags.Count; i++)
+        {
+            GD.Print(currentValue.GameplayTags[i]);
+        }
+
         //var newValue = GetEditedObject().Get(GetEditedProperty()).AsGodotObject() as GameplayTagContainer;
         //if (newValue == null || newValue == currentValue) { return; }
 
@@ -63,6 +58,7 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
         //for (int i = 0; i < children.Count; i++)
         //{
         //    itemsContainer.RemoveChild(children[i]);
+        //    children[i].QueueFree();
         //}
     }
 
@@ -74,24 +70,21 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
     private void OnAddElementButtonPressed()
     {
         GameplayTagOptionButton optionButton = GetOptionButton();
-
-        optionButton.ItemSelected += OnItemSelected;
         optionButton.Select(-1);
+        SetupRowAttachment(optionButton);
+    }
 
-        Button deleteButton = new Button();
-        deleteButton.Pressed += DeleteButton_Pressed;
-        deleteButton.Text = " - ";
-
+    private void SetupRowAttachment(GameplayTagOptionButton optionButton)
+    {
         HBoxContainer hBoxContainer = new HBoxContainer();
         hBoxContainer.AddChild(optionButton);
+
+        GameplayTagDeleteButton deleteButton = new GameplayTagDeleteButton(itemsContainer, hBoxContainer, optionButton, currentValue);
+        deleteButton.Text = " - ";
+        deleteButton.Pressed += () => { EmitChanged(GetEditedProperty(), currentValue); };
         hBoxContainer.AddChild(deleteButton);
 
         itemsContainer.AddChild(hBoxContainer);
-    }
-
-    private void DeleteButton_Pressed()
-    {
-        
     }
 
     private GameplayTagOptionButton GetOptionButton()
@@ -106,6 +99,7 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
             }
         }
 
+        optionButton.ItemSelected += OnItemSelected;
         return optionButton;
     }
 }
