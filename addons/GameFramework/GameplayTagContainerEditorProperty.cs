@@ -37,20 +37,13 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
 
         for (int i = 0; i < currentValue.GameplayTags.Count; i++)
         {
-            GameplayTagOptionButton optionButton = GetOptionButton();
-            optionButton.Select(GameplayTagEditorProperty.TagNames[currentValue.GameplayTags[i].TagName]);
+            GameplayTagOptionButton optionButton = GetOptionButton(currentValue.GameplayTags[i]);
             SetupRowAttachment(optionButton);
         }
     }
 
     public override void _UpdateProperty()
     {
-        GD.Print("=====================");
-        for (int i = 0; i < currentValue.GameplayTags.Count; i++)
-        {
-            GD.Print(currentValue.GameplayTags[i]);
-        }
-
         //var newValue = GetEditedObject().Get(GetEditedProperty()).AsGodotObject() as GameplayTagContainer;
         //if (newValue == null || newValue == currentValue) { return; }
 
@@ -70,7 +63,6 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
     private void OnAddElementButtonPressed()
     {
         GameplayTagOptionButton optionButton = GetOptionButton();
-        optionButton.Select(-1);
         SetupRowAttachment(optionButton);
     }
 
@@ -87,9 +79,9 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
         itemsContainer.AddChild(hBoxContainer);
     }
 
-    private GameplayTagOptionButton GetOptionButton()
+    private GameplayTagOptionButton GetOptionButton(GameplayTag initialSelectedTag = null)
     {
-        GameplayTagOptionButton optionButton = new GameplayTagOptionButton(currentValue);
+        GameplayTagOptionButton optionButton = new GameplayTagOptionButton(currentValue, initialSelectedTag);
 
         using (var enumerator = GameplayTagsManager.Instance.Tags.GetEnumerator())
         {
@@ -99,6 +91,7 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
             }
         }
 
+        optionButton.Select(initialSelectedTag != null ? GameplayTagEditorProperty.TagNames[initialSelectedTag.TagName] : -1);
         optionButton.ItemSelected += OnItemSelected;
         return optionButton;
     }

@@ -12,7 +12,7 @@ namespace GameFramework.GameplayTags
         [Export] public Array<GameplayTag> GameplayTags = new ();
         protected System.Collections.Generic.Dictionary<GameplayTag, GameplayTagDelegate> GameplayTagEventArray = new ();
 
-        public bool AddTag(GameplayTag tag)
+        public int AddTag(GameplayTag tag)
         {
             if (!GameplayTags.Contains(tag))
             {
@@ -28,16 +28,19 @@ namespace GameFramework.GameplayTags
                         tagDelegate.Invoke(tag, 1);
                     }
 
-                    if (invalidDelegates == null) return true;
-
-                    for (int i = 0; i < invalidDelegates.Count; i++)
+                    if (invalidDelegates != null)
                     {
-                        GameplayTagEventArray[tag] -= invalidDelegates[i];
+                        for (int i = 0; i < invalidDelegates.Count; i++)
+                        {
+                            GameplayTagEventArray[tag] -= invalidDelegates[i];
+                        }
                     }
                 }
-                return true;
+
+                return GameplayTags.Count - 1;
             }
-            return false;
+
+            return -1;
         }
 
         public bool RemoveTag(GameplayTag tag)

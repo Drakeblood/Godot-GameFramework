@@ -6,46 +6,32 @@ using GameFramework.GameplayTags;
 public partial class GameplayTagOptionButton : OptionButton
 {
     private GameplayTagContainer editedValue;
-    private int oldSelected;
+    private GameplayTag selectedTag;
 
     public GameplayTagOptionButton() : base()
     {
         ItemSelected += OnItemSelected;
     }
 
-    public GameplayTagOptionButton(GameplayTagContainer _editedValue) : this()
+    public GameplayTagOptionButton(GameplayTagContainer _editedValue, GameplayTag initialSelectedTag = null) : this()
     {
         editedValue = _editedValue;
-    }
-
-    public new void Select(int idx)
-    {
-        base.Select(idx);
-        oldSelected = idx;
+        selectedTag = initialSelectedTag;
     }
 
     private void OnItemSelected(long index)
     {
-        if (editedValue.GameplayTags.Count <= GetIndex())
-        {
-            if (!editedValue.AddTag(GameplayTagsManager.Instance.GetTag(GetItemText((int)index))))
-            {
-                Select(-1);
-            }
-        }
-        else
-        {
-            if (oldSelected != -1)
-            {
-                editedValue.RemoveTag(GameplayTagsManager.Instance.GetTag(GetItemText(oldSelected)));
-            }
-            if (!editedValue.AddTag(GameplayTagsManager.Instance.GetTag(GetItemText((int)index))))
-            {
-                Select(-1);
-            }
-        }
+        int addedIndex = editedValue.AddTag(GameplayTagsManager.Instance.GetTag(GetItemText((int)index)));
 
-        oldSelected = (int)index;
+        if (addedIndex != -1)
+        {
+            if (selectedTag != null)
+            {
+                editedValue.RemoveTag(selectedTag);
+            }
+            selectedTag = editedValue.GameplayTags[editedValue.GameplayTags.Count - 1];
+        }
+        else { Select(selectedTag != null ? GameplayTagEditorProperty.TagNames[selectedTag.TagName] : -1); }
     }
 }
 #endif

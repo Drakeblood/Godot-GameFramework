@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dpbe7vguyo23h"]
+[gd_scene load_steps=14 format=3 uid="uid://dpbe7vguyo23h"]
 
 [ext_resource type="Script" uid="uid://cthxrknvwu2ub" path="res://Source/Example/Hero.cs" id="1_7yv3s"]
 [ext_resource type="Texture2D" uid="uid://plxqvwcqsd2o" path="res://icon.svg" id="1_s0bb6"]
@@ -19,28 +19,20 @@ tagName = &"Character"
 
 [sub_resource type="Resource" id="Resource_xe78f"]
 script = ExtResource("2_iefqo")
-tagName = &"Character.Stunned"
+tagName = &"Ability.Attack"
 
 [sub_resource type="Resource" id="Resource_0havn"]
 script = ExtResource("2_iefqo")
 tagName = &"Ability"
 
 [sub_resource type="Resource" id="Resource_3gxkv"]
-script = ExtResource("2_iefqo")
-tagName = &"Character.Dying"
-
-[sub_resource type="Resource" id="Resource_s6x6t"]
-script = ExtResource("2_iefqo")
-tagName = &"Ability.Attack"
-
-[sub_resource type="Resource" id="Resource_wliqx"]
 script = ExtResource("3_4ekxl")
-GameplayTags = Array[ExtResource("2_iefqo")]([SubResource("Resource_v7bnu"), SubResource("Resource_xe78f"), SubResource("Resource_0havn"), SubResource("Resource_3gxkv"), SubResource("Resource_s6x6t")])
+GameplayTags = Array[ExtResource("2_iefqo")]([SubResource("Resource_v7bnu"), SubResource("Resource_xe78f"), SubResource("Resource_0havn")])
 
 [node name="Hero" type="Node2D"]
 script = ExtResource("1_7yv3s")
 x = SubResource("Resource_4ekxl")
-tagContainer = SubResource("Resource_wliqx")
+tagContainer = SubResource("Resource_3gxkv")
 huC = Array[String](["123", "321"])
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
