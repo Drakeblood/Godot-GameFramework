@@ -1,119 +1,91 @@
 using System;
-using System.IO;
-using System.Text;
-using System.Linq;
-using System.Xml.Serialization;
-using System.Runtime.Serialization;
-using System.Security.Cryptography;
+using System.Text.Json;
 
 using Godot;
+
 using GameFramework.Assertion;
 
 namespace GameFramework.Core
 {
     public static class ProjectStatics
     {
-        public static string SaveGamesLocation = "Saves/";
-        public static string EncryptionKey = "SuperKey";//8 characters
+        public const string UserLocation = "user://";
+        public const string SavesFolder = "saves/";
+        public const string SavesLocation = UserLocation + SavesFolder + "/";
+        public const string SaveGameEncryptionKey = "super_secret_password";
 
-        public static bool SerializeObjectToXml<T>(T serializableObject, string fileName, bool encrypt = true)
+        public static void SaveGame(string slotName, SaveGame data, bool encrypt = true)
         {
-            if (typeof(T).IsSerializable || typeof(T).GetInterfaces().Contains(typeof(ISerializable)))
+            try
             {
-                if (!fileName.EndsWith(".xml"))
+                DirAccess dir = DirAccess.Open(UserLocation);
+                if (!dir.DirExists(SavesFolder))
                 {
-                    fileName += ".xml";
+                    dir.MakeDir(SavesFolder);
+                    GD.Print("Folder 'saves' created.");
                 }
 
-                try
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(T));
-                    Stream streamObject = new FileStream(fileName, FileMode.Create, System.IO.FileAccess.Write);
+                string json = JsonSerializer.Serialize(data);
 
-                    if (encrypt)
+                if (encrypt)
+                {
+                    using (var file = FileAccess.OpenEncryptedWithPass(SavesLocation + slotName + ".sav", FileAccess.ModeFlags.Write, SaveGameEncryptionKey))
                     {
-                        DES key = DES.Create();
-                        using (CryptoStream cryptoStreamObject = new CryptoStream(streamObject, key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(EncryptionKey)), CryptoStreamMode.Write))
-                        {
-                            serializer.Serialize(cryptoStreamObject, serializableObject);
-                        }
+                        file.StoreString(json);
                     }
-                    else
-                    {
-                        serializer.Serialize(streamObject, serializableObject);
-                    }
-
-                    streamObject.Close();
-                    return true;
                 }
-                catch (Exception ex)
+                else
                 {
-                    GD.Print(ex.Message);
-                    return false;
+                    using (var file = FileAccess.Open(SavesLocation + slotName + ".sav", FileAccess.ModeFlags.Write))
+                    {
+                        file.StoreString(json);
+                    }
                 }
+
+                GD.Print("Game saved successfully.");
             }
-            GD.Print(typeof(T).Name + " is not serializable");
-            return false;
+            catch (Exception e)
+            {
+                GD.PrintErr("Failed to save game: " + e.Message);
+            }
         }
 
-        public static T DeserializeObjectFromXml<T>(string fileName, bool encrypt = true)
+        public static T LoadGame<T>(string slotName, bool encrypt = true) where T : SaveGame
         {
-            if (typeof(T).IsSerializable || typeof(T).GetInterfaces().Contains(typeof(ISerializable)))
+            try
             {
-                if (!fileName.EndsWith(".xml"))
+                if (!FileAccess.FileExists(UserLocation + slotName + ".sav"))
                 {
-                    fileName += ".xml";
-                }
-
-                try
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(T));
-                    Stream streamObject = new FileStream(fileName, FileMode.Open, System.IO.FileAccess.Read);
-                    T deserializedObject = default;
-
-                    if (encrypt)
-                    {
-                        DES key = DES.Create();
-                        using (CryptoStream cryptoStreamObject = new CryptoStream(streamObject, key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(EncryptionKey)), CryptoStreamMode.Read))
-                        {
-                            deserializedObject = (T)serializer.Deserialize(cryptoStreamObject);
-                        }
-                    }
-                    else
-                    {
-                        deserializedObject = (T)serializer.Deserialize(streamObject);
-                    }
-
-                    streamObject.Close();
-                    return deserializedObject;
-                }
-                catch (Exception ex)
-                {
-                    GD.Print(ex.Message);
+                    GD.Print("Save file not found.");
                     return default;
                 }
-            }
-            GD.Print(typeof(T).Name + " is not serializable");
-            return default;
-        }
 
-        public static void SaveGame<T>(T saveGameObject, string fileName, bool encrypt = true) where T : SaveGame
-        {
-            if (!Directory.Exists(SaveGamesLocation))
+                T data;
+                if (encrypt)
+                {
+                    using (var file = FileAccess.OpenEncryptedWithPass(SavesLocation + slotName + ".sav", FileAccess.ModeFlags.Read, SaveGameEncryptionKey))
+                    {
+                        string json = file.GetAsText();
+                        data = JsonSerializer.Deserialize<T>(json);
+                    }
+                }
+                else
+                {
+                    using (var file = FileAccess.Open(SavesLocation + slotName + ".sav", FileAccess.ModeFlags.Read))
+                    {
+                        string json = file.GetAsText();
+                        data = JsonSerializer.Deserialize<T>(json);
+                    }
+                }
+
+                GD.Print("Game loaded successfully.");
+                return data;
+            }
+            catch (Exception e)
             {
-                Directory.CreateDirectory(SaveGamesLocation);
+                GD.PrintErr("Failed to load game: " + e.Message);
+                return null;
             }
-
-            string savePath = SaveGamesLocation + fileName;
-
-            SerializeObjectToXml(saveGameObject, savePath, encrypt);
-        }
-
-        public static T LoadGame<T>(string fileName, bool encrypt = true) where T : SaveGame
-        {
-            string loadPath = SaveGamesLocation + fileName;
-
-            return DeserializeObjectFromXml<T>(loadPath, encrypt);
         }
 
         public static T GetGameInstance<T>(SceneTree sceneTree) where T : GameInstance
