@@ -14,7 +14,7 @@ namespace GameFramework.Core
         public const string SavesLocation = UserLocation + SavesFolder + "/";
         public const string SaveGameEncryptionKey = "super_secret_password";
 
-        public static void SaveGame(string slotName, SaveGame data, bool encrypt = true)
+        public static void SaveGame<T>(string slotName, T data, bool encrypt = true) where T : SaveGame
         {
             try
             {
@@ -24,7 +24,7 @@ namespace GameFramework.Core
                     dir.MakeDir(SavesFolder);
                     GD.Print("Folder 'saves' created.");
                 }
-
+                
                 string json = JsonSerializer.Serialize(data);
 
                 if (encrypt)
@@ -41,7 +41,7 @@ namespace GameFramework.Core
                         file.StoreString(json);
                     }
                 }
-
+                
                 GD.Print("Game saved successfully.");
             }
             catch (Exception e)
@@ -54,7 +54,7 @@ namespace GameFramework.Core
         {
             try
             {
-                if (!FileAccess.FileExists(UserLocation + slotName + ".sav"))
+                if (!FileAccess.FileExists(SavesLocation + slotName + ".sav"))
                 {
                     GD.Print("Save file not found.");
                     return default;
@@ -77,7 +77,7 @@ namespace GameFramework.Core
                         data = JsonSerializer.Deserialize<T>(json);
                     }
                 }
-
+                    
                 GD.Print("Game loaded successfully.");
                 return data;
             }
