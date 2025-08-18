@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="GameModeSettings" load_steps=5 format=3 uid="uid://b5e2xvcvkfol7"]
+
+[ext_resource type="Script" uid="uid://28qjokthquuk" path="res://Source/Example/MyGameMode.cs" id="1_eksvn"]
+[ext_resource type="PackedScene" uid="uid://dpbe7vguyo23h" path="res://Content/Example/Hero.tscn" id="2_w4jpl"]
+[ext_resource type="PackedScene" uid="uid://hq6jeyhxb0m2" path="res://Content/GameFramework/DefaultPlayerControllerScene.tscn" id="3_3bf7a"]
+[ext_resource type="Script" uid="uid://dgng8w2waj7io" path="res://Source/GameFramework/Core/GameModeSettings.cs" id="4_3eo4n"]
+
+[resource]
+script = ExtResource("4_3eo4n")
+GameModeScript = ExtResource("1_eksvn")
+PawnScene = ExtResource("2_w4jpl")
+PlayerControllerScene = ExtResource("3_3bf7a")
