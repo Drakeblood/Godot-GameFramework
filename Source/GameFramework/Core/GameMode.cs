@@ -5,7 +5,7 @@ namespace GameFramework.Core
 {
     public partial class GameMode : Node
     {
-        private GFSceneTree gfSceneTree;
+        protected GFSceneTree SceneTree;
 
         private GameModeSettings gameModeSettings;
         public GameModeSettings GameModeSettings
@@ -19,8 +19,8 @@ namespace GameFramework.Core
         /// </summary>
         public virtual void InitGame(GFSceneTree sceneTree)
         {
-            gfSceneTree = sceneTree;
-            gfSceneTree.GameInstance.Heroes.Clear(); 
+            SceneTree = sceneTree;
+            SceneTree.GameInstance.Heroes.Clear(); 
         }
 
         public virtual PlayerController Login(Player player)
@@ -60,21 +60,21 @@ namespace GameFramework.Core
             }
 
             Assert.IsNotNull(pawn, "Pawn was not found.");
-            gfSceneTree.CurrentLevel.AddChild(newNode);
+            SceneTree.CurrentLevel.AddChild(newNode);
 
-            gfSceneTree.CurrentLevel.PreparePlayerStartsLocation();
-            if (gfSceneTree.CurrentLevel.PlayerStartsLocations.Count > 0)
+            SceneTree.CurrentLevel.PreparePlayerStartsLocation();
+            if (SceneTree.CurrentLevel.PlayerStartsLocations.Count > 0)
             {
                 if (newNode is Node2D player2D)
                 {
-                    Vector3 playerPosition = gfSceneTree.CurrentLevel.PlayerStartsLocations[0];
+                    Vector3 playerPosition = SceneTree.CurrentLevel.PlayerStartsLocations[0];
                     player2D.Position = new Vector2(playerPosition.X, playerPosition.Y);
-                    player2D.Rotation = gfSceneTree.CurrentLevel.PlayerStartsRotations[0].X;
+                    player2D.Rotation = SceneTree.CurrentLevel.PlayerStartsRotations[0].X;
                 }
                 else if (newNode is Node3D player3D)
                 {
-                    player3D.Position = gfSceneTree.CurrentLevel.PlayerStartsLocations[0];
-                    player3D.Rotation = gfSceneTree.CurrentLevel.PlayerStartsRotations[0];
+                    player3D.Position = SceneTree.CurrentLevel.PlayerStartsLocations[0];
+                    player3D.Rotation = SceneTree.CurrentLevel.PlayerStartsRotations[0];
                 }
             }
             

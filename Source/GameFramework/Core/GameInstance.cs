@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using GameFramework.Assertion;
 using Godot;
 
 namespace GameFramework.Core
@@ -51,6 +51,12 @@ namespace GameFramework.Core
                 playerController.SetPlayer(localPlayers[i]);
                 sceneTree.GameMode.PostLogin(playerController);
             }
+        }
+
+        public PlayerController GetPlayerController(int index)
+        {
+            Assert.IsTrue(localPlayers.Count > index);
+            return localPlayers[index].PlayerController;
         }
     }
 }
