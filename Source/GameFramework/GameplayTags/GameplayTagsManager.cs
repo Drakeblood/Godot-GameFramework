@@ -39,8 +39,21 @@ namespace GameFramework.GameplayTags
 
                 while (file.GetPosition() < file.GetLength())
                 {
-                    tagsNames.Add(file.GetLine());
+                    string line = file.GetLine();
+                    int descriptionSeparator = line.IndexOf('-');
+
+                    if (descriptionSeparator != -1)
+                    {
+                        tagsNames.Add(line.Substring(0, descriptionSeparator - 1));
+                        //string tagDescription = line.Substring(line.IndexOf('-') + 2);
+                    }
+                    else
+                    {
+                        tagsNames.Add(line);
+                    }
                 }
+
+                file.Close();
             }
 
             tags = new HashSet<GameplayTag>(tagsNames.Count);

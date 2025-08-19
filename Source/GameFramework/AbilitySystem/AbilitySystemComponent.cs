@@ -125,33 +125,30 @@ namespace GameFramework.AbilitySystem
 
         public override void _UnhandledInput(InputEvent @event)
         {
-            if (@event is InputEventAction inputEventAction)
+            if (@event.IsActionType())
             {
                 for (int i = 0; i < ActivatableAbilities.Count; i++)
                 {
-                    if (ActivatableAbilities[i].InputActionName == inputEventAction.Action)
+                    if (@event.IsActionPressed(ActivatableAbilities[i].InputActionName))
                     {
-                        if (Input.IsActionJustPressed(ActivatableAbilities[i].InputActionName))
-                        {
-                            ActivatableAbilities[i].IsInputPressed = true;
+                        ActivatableAbilities[i].IsInputPressed = true;
 
-                            if (ActivatableAbilities[i].IsActive)
-                            {
-                                ActivatableAbilities[i].InputPressed();
-                            }
-                            else
-                            {
-                                TryActivateAbility(ActivatableAbilities[i].GetType());
-                            }
+                        if (ActivatableAbilities[i].IsActive)
+                        {
+                            ActivatableAbilities[i].InputPressed();
                         }
-                        else if (Input.IsActionJustReleased(ActivatableAbilities[i].InputActionName))
+                        else
                         {
-                            ActivatableAbilities[i].IsInputPressed = false;
+                            TryActivateAbility(ActivatableAbilities[i].GetType());
+                        }
+                    }
+                    else if (@event.IsActionReleased(ActivatableAbilities[i].InputActionName))
+                    {
+                        ActivatableAbilities[i].IsInputPressed = false;
 
-                            if (ActivatableAbilities[i].IsActive)
-                            {
-                                ActivatableAbilities[i].InputReleased();
-                            }
+                        if (ActivatableAbilities[i].IsActive)
+                        {
+                            ActivatableAbilities[i].InputReleased();
                         }
                     }
                 }

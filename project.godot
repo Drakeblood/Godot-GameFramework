@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Godot-GameFramework"
-run/main_scene="res://Content/Example/Scenes/MainMenuLevel.tscn"
+run/main_scene="res://Example/Scenes/MainMenuLevel.tscn"
 run/main_loop_type="GFSceneTree"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
-game_framework/game_instance_script="res://Source/Example/MyGameInstance.cs"
+game_framework/game_instance_script="res://Example/src/MyGameInstance.cs"
 game_framework/default_game_mode_settings="res://Content/GameFramework/DefaultGameModeSettings.tres"
-game_framework/gameplay_tags_files=PackedStringArray("res://Config/DefaultGameplayTags.ini")
+game_framework/gameplay_tags_files=PackedStringArray("res://Config/Tags/DefaultGameplayTags.ini")
 
 [dotnet]
 
@@ -32,4 +32,12 @@ enabled=PackedStringArray("res://addons/GameFramework/plugin.cfg")
 
 folder_colors={
 "res://Source/": "purple"
+}
+
+[input]
+
+fire={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
+]
 }

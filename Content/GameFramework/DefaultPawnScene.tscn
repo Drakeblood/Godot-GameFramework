@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cjwekea3gl6pk"]
 
-[ext_resource type="Script" uid="uid://bk2o0s4i8xh8h" path="res://Source/GameFramework/Core/Pawn.cs" id="1_xtb1j"]
+[ext_resource type="Script" uid="uid://c5ckufprc38nj" path="res://Source/GameFramework/Core/Pawn.cs" id="1_xtb1j"]
 
 [node name="DefaultPawn" type="Node"]
 script = ExtResource("1_xtb1j")

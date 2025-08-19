@@ -1,11 +1,11 @@
 [gd_scene load_steps=14 format=3 uid="uid://dpbe7vguyo23h"]
 
-[ext_resource type="Script" uid="uid://cthxrknvwu2ub" path="res://Source/Example/Hero.cs" id="1_7yv3s"]
-[ext_resource type="Texture2D" uid="uid://plxqvwcqsd2o" path="res://icon.svg" id="1_s0bb6"]
+[ext_resource type="Script" uid="uid://cthxrknvwu2ub" path="res://Example/src/Hero.cs" id="1_7yv3s"]
+[ext_resource type="Texture2D" uid="uid://c072i7eto1vxa" path="res://icon.svg" id="1_s0bb6"]
 [ext_resource type="Script" uid="uid://dl3xbq40u2vfc" path="res://Source/GameFramework/GameplayTags/GameplayTag.cs" id="2_iefqo"]
 [ext_resource type="Script" uid="uid://b52fderi8fkbk" path="res://Source/GameFramework/AbilitySystem/AbilitySystemComponent.cs" id="2_v8ooj"]
 [ext_resource type="Script" uid="uid://qxixpb1lrxdd" path="res://Source/GameFramework/GameplayTags/GameplayTagContainer.cs" id="3_4ekxl"]
-[ext_resource type="Resource" uid="uid://dyvobffq23b8k" path="res://Content/Example/GA_Test1.tres" id="3_4xvfx"]
+[ext_resource type="Resource" uid="uid://dyvobffq23b8k" path="res://Example/GA_Test1.tres" id="3_4xvfx"]
 [ext_resource type="Script" uid="uid://c5ckufprc38nj" path="res://Source/GameFramework/Core/Pawn.cs" id="4_2wii5"]
 [ext_resource type="Script" uid="uid://cy2ev2a77w1rc" path="res://Source/GameFramework/AbilitySystem/GameplayAbility.cs" id="5_ipocc"]
 

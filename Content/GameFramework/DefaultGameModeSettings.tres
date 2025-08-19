@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="GameModeSettings" load_steps=5 format=3 uid="uid://p5in65vfhtx7"]
 
-[ext_resource type="Script" uid="uid://dgng8w2waj7io" path="res://Source/GameFramework/Core/GameModeSettings.cs" id="1_gd84f"]
-[ext_resource type="Script" uid="uid://28qjokthquuk" path="res://Source/Example/MyGameMode.cs" id="1_guxkr"]
+[ext_resource type="Script" uid="uid://bjsnuk5kd7vbc" path="res://Example/src/MyGameMode.cs" id="1_1uyp7"]
+[ext_resource type="Script" uid="uid://gnrprgt87fcg" path="res://Source/GameFramework/Core/GameModeSettings.cs" id="1_gd84f"]
 [ext_resource type="PackedScene" uid="uid://cjwekea3gl6pk" path="res://Content/GameFramework/DefaultPawnScene.tscn" id="2_wka81"]
 [ext_resource type="PackedScene" uid="uid://hq6jeyhxb0m2" path="res://Content/GameFramework/DefaultPlayerControllerScene.tscn" id="3_ac41w"]
 
 [resource]
 script = ExtResource("1_gd84f")
-GameModeScript = ExtResource("1_guxkr")
+GameModeScript = ExtResource("1_1uyp7")
 PawnScene = ExtResource("2_wka81")
 PlayerControllerScene = ExtResource("3_ac41w")

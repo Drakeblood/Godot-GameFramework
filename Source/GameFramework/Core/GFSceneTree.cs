@@ -39,11 +39,13 @@ namespace GameFramework.Core
 
             {//Initialize GameInstance object
                 string gameInstanceScriptPath = ProjectSettings.GetSetting("application/game_framework/game_instance_script").AsString();
-                CSharpScript gameInstanceScript = GD.Load<CSharpScript>(gameInstanceScriptPath);
+                Script gameInstanceScript = GD.Load<Script>(gameInstanceScriptPath);
 
                 Assert.IsNotNull(gameInstanceScript, $"Load script from {gameInstanceScriptPath} path failed. Please update \"application/game_framework/game_instance_script\" option in project settings.");
 
-                GameInstance = gameInstanceScript.New().AsGodotObject() as GameInstance;
+                GameInstance = (gameInstanceScript as CSharpScript)?.New().AsGodotObject() as GameInstance ?? (gameInstanceScript as GDScript)?.New().AsGodotObject() as GameInstance;
+                Assert.IsNotNull(GameInstance);
+
                 GameInstance.Init(this);
                 GameInstance.CreateLocalPlayer();
             }
@@ -135,7 +137,9 @@ namespace GameFramework.Core
                 GameMode.QueueFree();
             }
 
-            GameMode = gameModeSettings.GameModeScript.New().AsGodotObject() as GameMode;
+            GameMode = (gameModeSettings.GameModeScript as CSharpScript)?.New().AsGodotObject() as GameMode ?? (gameModeSettings.GameModeScript as GDScript)?.New().AsGodotObject() as GameMode;
+            Assert.IsNotNull(GameMode);
+
             GameMode.Name = "GameMode";
             GameMode.GameModeSettings = gameModeSettings;
             GameMode.InitGame(this);

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dl3xbq40u2vfc" path="res://Source/GameFramework/GameplayTags/GameplayTag.cs" id="1_46nhr"]
 [ext_resource type="Script" uid="uid://qxixpb1lrxdd" path="res://Source/GameFramework/GameplayTags/GameplayTagContainer.cs" id="1_fwy4w"]
-[ext_resource type="Script" uid="uid://2oktyusonog2" path="res://Source/Example/AbilitySystem/GA_Test1.cs" id="1_r0dl4"]
+[ext_resource type="Script" uid="uid://2oktyusonog2" path="res://Example/src/AbilitySystem/GA_Test1.cs" id="1_r0dl4"]
 
 [sub_resource type="Resource" id="Resource_46nhr"]
 script = ExtResource("1_46nhr")
@@ -30,4 +30,4 @@ ActivationOwnedTags = null
 ActivationRequiredTags = null
 ActivationBlockedTags = null
 SourceRequiredTags = SubResource("Resource_undko")
-InputActionName = null
+InputActionName = &"fire"

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://do86p7nmgrgsn"]
+
+[ext_resource type="Script" uid="uid://du4laestvu32x" path="res://Example/src/MainMenuLevel.cs" id="1_utjao"]
+[ext_resource type="Resource" uid="uid://p5in65vfhtx7" path="res://Content/GameFramework/DefaultGameModeSettings.tres" id="2_6xxwr"]
+
+[node name="MainMenuLevel" type="Node"]
+script = ExtResource("1_utjao")
+GameModeSettingsOverride = ExtResource("2_6xxwr")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 412.0
+offset_top = 117.0
+offset_right = 693.0
+offset_bottom = 205.0
+text = "Open Level0"
