@@ -1,5 +1,6 @@
 #if TOOLS
 using Godot;
+using Godot.Collections;
 
 using GameFramework.GameplayTags;
 
@@ -8,6 +9,8 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
     private VBoxContainer vBoxContainer = new VBoxContainer();
     private VBoxContainer itemsContainer = new VBoxContainer();
     public GameplayTagContainer currentValue;
+
+    private bool enteredTree;
 
     public GameplayTagContainerEditorProperty()
     {
@@ -25,17 +28,24 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
 
     public override void _EnterTree()
     {
-        currentValue = new GameplayTagContainer();
+        enteredTree = true;
+        GameplayTagContainer tagContainer = new GameplayTagContainer();
 
-        using (var enumerator = GetEditedObject().Get(GetEditedProperty()).AsGodotObject().Get("GameplayTags").AsGodotArray().GetEnumerator())
+        using (var enumerator = GetEditedObject()?.Get(GetEditedProperty()).AsGodotObject()?.Get("GameplayTags").AsGodotArray().GetEnumerator())
         {
-            while (enumerator.MoveNext())
+            if (enumerator != null)
             {
-                currentValue.GameplayTags.Add(GameplayTagsManager.Instance.GetTag(((Resource)enumerator.Current).Get("tagName").ToString()));
+                while (enumerator.MoveNext())
+                {
+                    tagContainer.AddTag(GameplayTagsManager.Instance.GetTag(((Resource)enumerator.Current).Get("tagName").ToString()));
+                }
             }
         }
 
-        for (int i = 0; i < currentValue.GameplayTags.Count; i++)
+        if (tagContainer.Length <= 0) { return; }
+        currentValue = tagContainer;
+
+        for (int i = 0; i < currentValue.Length; i++)
         {
             GameplayTagOptionButton optionButton = GetOptionButton(currentValue.GameplayTags[i]);
             SetupRowAttachment(optionButton);
@@ -44,15 +54,16 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
 
     public override void _UpdateProperty()
     {
-        //var newValue = GetEditedObject().Get(GetEditedProperty()).AsGodotObject() as GameplayTagContainer;
-        //if (newValue == null || newValue == currentValue) { return; }
+        var newValue = GetEditedObject().Get(GetEditedProperty()).AsGodotObject() as GameplayTagContainer;
+        if (enteredTree) { enteredTree = false; return; }
+        if (newValue == currentValue) { return; }
 
-        //Array<Node> children = itemsContainer.GetChildren();
-        //for (int i = 0; i < children.Count; i++)
-        //{
-        //    itemsContainer.RemoveChild(children[i]);
-        //    children[i].QueueFree();
-        //}
+        Array<Node> children = itemsContainer.GetChildren();
+        for (int i = 0; i < children.Count; i++)
+        {
+            itemsContainer.RemoveChild(children[i]);
+            children[i].QueueFree();
+        }
     }
 
     private void OnItemSelected(long index)
@@ -62,6 +73,7 @@ public partial class GameplayTagContainerEditorProperty : EditorProperty
 
     private void OnAddElementButtonPressed()
     {
+        currentValue ??= new GameplayTagContainer();
         GameplayTagOptionButton optionButton = GetOptionButton();
         SetupRowAttachment(optionButton);
     }

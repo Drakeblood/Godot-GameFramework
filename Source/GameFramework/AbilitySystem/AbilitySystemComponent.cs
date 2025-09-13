@@ -79,15 +79,15 @@ namespace GameFramework.AbilitySystem
             return false;
         }
 
-        public void CancelAbilitiesWithTags(GameplayTag[] tags)
+        public void CancelAbilitiesWithTags(GameplayTagContainer tagContainer)
         {
-            if (tags.Length == 0) return;
+            if (tagContainer.Length == 0) return;
 
             for (int i = 0; i < ActivatableAbilities.Count; i++)
             {
                 if (!ActivatableAbilities[i].IsActive) continue;
 
-                if (GameplayTag.HasAny(ActivatableAbilities[i].AbilityTags, tags))
+                if (ActivatableAbilities[i].AbilityTags.HasAny(tagContainer))
                 {
                     ActivatableAbilities[i].EndAbility(true);
                 }
@@ -98,8 +98,8 @@ namespace GameFramework.AbilitySystem
 
         #region GameplayTags
 
-        public GameplayTag[] GetExplicitGameplayTags() => GameplayTagCountContainer.ExplicitGameplayTags.ToArray();
-        public GameplayTag[] GetBlockedAbilityTags() => BlockedAbilityTags.ExplicitGameplayTags.ToArray();
+        public GameplayTagContainer GetOwnedGameplayTags() => GameplayTagCountContainer.ExplicitTags;
+        public GameplayTagContainer GetBlockedAbilityTags() => BlockedAbilityTags.ExplicitTags;
 
         public void UpdateTagMap(GameplayTag tag, int countDelta)
         {

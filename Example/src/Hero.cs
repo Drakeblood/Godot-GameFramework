@@ -5,7 +5,7 @@ using Godot.Collections;
 
 public partial class Hero : Node2D
 {
-    [Export] private GameplayTag x = GameplayTagsManager.Instance.GetTag("Character");
+    [Export] private GameplayTag x;
 
     [Export] private GameplayTagContainer tagContainer = new GameplayTagContainer();
 

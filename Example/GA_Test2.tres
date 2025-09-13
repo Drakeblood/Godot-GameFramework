@@ -1,21 +1,19 @@
-[gd_resource type="Resource" load_steps=5 format=3 uid="uid://boou17tf5cdxh"]
+[gd_resource type="Resource" load_steps=6 format=3 uid="uid://boou17tf5cdxh"]
 
 [ext_resource type="Script" uid="uid://dl3xbq40u2vfc" path="res://Source/GameFramework/GameplayTags/GameplayTag.cs" id="1_rgfuu"]
 [ext_resource type="Script" uid="uid://2oktyusonog2" path="res://Example/src/AbilitySystem/GA_Test1.cs" id="1_tqhlf"]
 [ext_resource type="Script" uid="uid://qxixpb1lrxdd" path="res://Source/GameFramework/GameplayTags/GameplayTagContainer.cs" id="2_r57tu"]
 
 [sub_resource type="Resource" id="Resource_8yyuv"]
+script = ExtResource("1_rgfuu")
+tagName = &"Character.Stunned"
+
+[sub_resource type="Resource" id="Resource_agmky"]
 script = ExtResource("2_r57tu")
-GameplayTags = Array[ExtResource("1_rgfuu")]([])
+GameplayTags = Array[ExtResource("1_rgfuu")]([SubResource("Resource_8yyuv")])
 
 [resource]
 script = ExtResource("1_tqhlf")
 a = 44
-AbilityTags = null
-CancelAbilitiesWithTag = null
-BlockAbilitiesWithTag = null
-ActivationOwnedTags = null
-ActivationRequiredTags = null
-ActivationBlockedTags = null
-SourceRequiredTags = SubResource("Resource_8yyuv")
+CancelAbilitiesWithTag = SubResource("Resource_agmky")
 InputActionName = null

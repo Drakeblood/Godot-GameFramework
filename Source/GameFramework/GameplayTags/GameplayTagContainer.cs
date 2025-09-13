@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 using Godot;
 using Godot.Collections;
 
@@ -9,75 +6,69 @@ namespace GameFramework.GameplayTags
     [GlobalClass]
     public partial class GameplayTagContainer : Resource
     {
-        [Export] public Array<GameplayTag> GameplayTags = new ();
-        protected System.Collections.Generic.Dictionary<GameplayTag, GameplayTagDelegate> GameplayTagEventArray = new ();
+        [Export] public Array<GameplayTag> GameplayTags { get; private set; } = new Array<GameplayTag>();
 
-        public int AddTag(GameplayTag tag)
+        public int Length => GameplayTags.Count;
+        public GameplayTag this[int index] => GameplayTags[index];
+
+        public void AddTag(GameplayTag tag)
         {
             if (!GameplayTags.Contains(tag))
             {
                 GameplayTags.Add(tag);
-
-                if (GameplayTagEventArray.ContainsKey(tag))
-                {
-                    List<GameplayTagDelegate> invalidDelegates = null;
-                    Delegate[] delegates = GameplayTagEventArray[tag].GetInvocationList();
-                    for (int i = 0; i < delegates.Length; i++)
-                    {
-                        if (delegates[i] is not GameplayTagDelegate tagDelegate) continue;
-                        tagDelegate.Invoke(tag, 1);
-                    }
-
-                    if (invalidDelegates != null)
-                    {
-                        for (int i = 0; i < invalidDelegates.Count; i++)
-                        {
-                            GameplayTagEventArray[tag] -= invalidDelegates[i];
-                        }
-                    }
-                }
-
-                return GameplayTags.Count - 1;
             }
-
-            return -1;
         }
 
-        public bool RemoveTag(GameplayTag tag)
+        public void RemoveTag(GameplayTag tag)
         {
-            if (GameplayTags.Remove(tag))
+            GameplayTags.Remove(tag);
+        }
+
+        public bool HasTag(GameplayTag tagToCheck)
+        {
+            if (HasTagExact(tagToCheck)) { return true; }
+
+            for (int i = 0; i < Length; i++)
             {
-                if (GameplayTagEventArray.ContainsKey(tag))
+                if (GameplayTags[i].MatchesSubTags(tagToCheck)) { return true; }
+            }
+
+            return false;
+        }
+
+        public bool HasTagExact(GameplayTag tagToCheck) => GameplayTags.Contains(tagToCheck);
+
+        public bool HasAny(GameplayTagContainer tagContainer)
+        {
+            for (int i = 0; i < tagContainer.Length; i++)
+            {
+                for (int j = 0; j < Length; j++)
                 {
-                    List<GameplayTagDelegate> invalidDelegates = null;
-                    Delegate[] delegates = GameplayTagEventArray[tag].GetInvocationList();
-                    for (int i = 0; i < delegates.Length; i++)
-                    {
-                        if (delegates[i] is not GameplayTagDelegate tagDelegate) continue;
-                        tagDelegate.Invoke(tag, 0);
-                    }
-
-                    if (invalidDelegates == null) { return true; }
-
-                    for (int i = 0; i < invalidDelegates.Count; i++)
-                    {
-                        GameplayTagEventArray[tag] -= invalidDelegates[i];
-                    }
+                    if (GameplayTags[j].MatchesTag(tagContainer.GameplayTags[i])) { return true; }
                 }
-                return true;
             }
             return false;
         }
 
-        public void RegisterGameplayTagEvent(GameplayTag tag, GameplayTagDelegate tagDelegate)
+        public bool HasAll(GameplayTagContainer tagContainer)
         {
-            if (!GameplayTagEventArray.ContainsKey(tag))
+            for (int i = 0; i < tagContainer.Length; i++)
             {
-                GameplayTagEventArray.Add(tag, tagDelegate);
-                return;
+                for (int j = 0; j < Length; j++)
+                {
+                    if (!GameplayTags[j].MatchesTag(tagContainer.GameplayTags[i])) return false;
+                }
             }
+            return true;
+        }
 
-            GameplayTagEventArray[tag] += tagDelegate;
+        public bool HasAllExact(GameplayTagContainer tagContainer)
+        {
+            for (int i = 0; i < tagContainer.Length; i++)
+            {
+                if (!GameplayTags.Contains(tagContainer.GameplayTags[i])) return false;
+            }
+            return true;
         }
     }
 }

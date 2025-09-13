@@ -48,7 +48,12 @@ public partial class GameplayTagEditorProperty : EditorProperty
 
     public override void _EnterTree()
     {
-        currentValue = GameplayTagsManager.Instance.GetTag(GetEditedObject().Get(GetEditedProperty()).AsGodotObject().Get("tagName").ToString());
+        string tagName = GetEditedObject()?.Get(GetEditedProperty()).AsGodotObject()?.Get("tagName").ToString();
+
+        currentValue = !string.IsNullOrEmpty(tagName) 
+            ? GameplayTagsManager.Instance.GetTag(tagName) 
+            : GameplayTagsManager.Instance.GetTag(propertyControl.GetItemText(0));
+
         propertyControl.Select(TagNames[currentValue.TagName]);
     }
 

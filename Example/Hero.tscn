@@ -1,38 +1,20 @@
-[gd_scene load_steps=14 format=3 uid="uid://dpbe7vguyo23h"]
+[gd_scene load_steps=9 format=3 uid="uid://dpbe7vguyo23h"]
 
 [ext_resource type="Script" uid="uid://cthxrknvwu2ub" path="res://Example/src/Hero.cs" id="1_7yv3s"]
 [ext_resource type="Texture2D" uid="uid://c072i7eto1vxa" path="res://icon.svg" id="1_s0bb6"]
-[ext_resource type="Script" uid="uid://dl3xbq40u2vfc" path="res://Source/GameFramework/GameplayTags/GameplayTag.cs" id="2_iefqo"]
+[ext_resource type="Script" uid="uid://dl3xbq40u2vfc" path="res://Source/GameFramework/GameplayTags/GameplayTag.cs" id="2_lrsvg"]
 [ext_resource type="Script" uid="uid://b52fderi8fkbk" path="res://Source/GameFramework/AbilitySystem/AbilitySystemComponent.cs" id="2_v8ooj"]
-[ext_resource type="Script" uid="uid://qxixpb1lrxdd" path="res://Source/GameFramework/GameplayTags/GameplayTagContainer.cs" id="3_4ekxl"]
 [ext_resource type="Resource" uid="uid://dyvobffq23b8k" path="res://Example/GA_Test1.tres" id="3_4xvfx"]
 [ext_resource type="Script" uid="uid://c5ckufprc38nj" path="res://Source/GameFramework/Core/Pawn.cs" id="4_2wii5"]
-[ext_resource type="Script" uid="uid://cy2ev2a77w1rc" path="res://Source/GameFramework/AbilitySystem/GameplayAbility.cs" id="5_ipocc"]
+[ext_resource type="Script" uid="uid://cy2ev2a77w1rc" path="res://Source/GameFramework/AbilitySystem/GameplayAbility.cs" id="5_t00t6"]
 
-[sub_resource type="Resource" id="Resource_4ekxl"]
-script = ExtResource("2_iefqo")
-tagName = &"Ability.Attack"
-
-[sub_resource type="Resource" id="Resource_v7bnu"]
-script = ExtResource("2_iefqo")
-tagName = &"Character"
-
-[sub_resource type="Resource" id="Resource_xe78f"]
-script = ExtResource("2_iefqo")
-tagName = &"Ability.Attack"
-
-[sub_resource type="Resource" id="Resource_0havn"]
-script = ExtResource("2_iefqo")
-tagName = &"Ability"
-
-[sub_resource type="Resource" id="Resource_3gxkv"]
-script = ExtResource("3_4ekxl")
-GameplayTags = Array[ExtResource("2_iefqo")]([SubResource("Resource_v7bnu"), SubResource("Resource_xe78f"), SubResource("Resource_0havn")])
+[sub_resource type="Resource" id="Resource_t00t6"]
+script = ExtResource("2_lrsvg")
+tagName = &"Character.Stunned"
 
 [node name="Hero" type="Node2D"]
 script = ExtResource("1_7yv3s")
-x = SubResource("Resource_4ekxl")
-tagContainer = SubResource("Resource_3gxkv")
+x = SubResource("Resource_t00t6")
 huC = Array[String](["123", "321"])
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -40,7 +22,7 @@ texture = ExtResource("1_s0bb6")
 
 [node name="ASC" type="Node" parent="."]
 script = ExtResource("2_v8ooj")
-startupAbilities = Array[ExtResource("5_ipocc")]([ExtResource("3_4xvfx")])
+startupAbilities = Array[ExtResource("5_t00t6")]([ExtResource("3_4xvfx")])
 
 [node name="Pawn" type="Node" parent="."]
 script = ExtResource("4_2wii5")

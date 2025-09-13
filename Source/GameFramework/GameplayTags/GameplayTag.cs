@@ -23,10 +23,15 @@ namespace GameFramework.GameplayTags
         /// </summary>
         public bool MatchesTag(GameplayTag tagToCheck)
         {
+            if (this == tagToCheck) { return true; }
+            return MatchesSubTags(tagToCheck);
+        }
+
+        public bool MatchesSubTags(GameplayTag tagToCheck)
+        {
             List<GameplayTag> separatedTag = GameplayTagsManager.Instance.GetSeparatedTag(this);
             List<GameplayTag> separatedTagToCheck = GameplayTagsManager.Instance.GetSeparatedTag(tagToCheck);
 
-            if (separatedTag.Count == separatedTagToCheck.Count) return this == tagToCheck;
             if (separatedTagToCheck.Count > separatedTag.Count) return false;
 
             for (int i = 0; i < separatedTag.Count && i < separatedTagToCheck.Count; i++)
@@ -35,35 +40,7 @@ namespace GameFramework.GameplayTags
             }
 
             if (separatedTagToCheck.Count == 0 && separatedTag.Count > 0) return separatedTag[0] == tagToCheck;
-            
-            return true;
-        }
 
-        public static bool HasAny(GameplayTag[] tags1, GameplayTag[] tags2)
-        {
-            if (tags2.Length < 1) return false;
-
-            for (int i = 0; i < tags2.Length; i++)
-            {
-                for (int j = 0; j < tags1.Length; j++)
-                {
-                    if (tags1[j].MatchesTag(tags2[i])) return true;
-                }
-            }
-            return false;
-        }
-
-        public static bool HasAll(GameplayTag[] tags1, GameplayTag[] tags2)
-        {
-            if(tags2.Length < 1) return true;
-
-            for (int i = 0; i < tags2.Length; i++)
-            {
-                for (int j = 0; j < tags1.Length; j++)
-                {
-                    if (!tags1[j].MatchesTag(tags2[i])) return false;
-                }
-            }
             return true;
         }
 

@@ -2,7 +2,7 @@ using System;
 
 namespace GameFramework.Assertion
 {
-    internal class AssertionMessages
+    internal class AssertionMessages : System.Object
     {
         private const string expected = "Expected:";
 

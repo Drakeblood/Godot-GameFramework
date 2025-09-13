@@ -7,7 +7,7 @@ using GameFramework.Assertion;
 
 namespace GameFramework.Core
 {
-    public static class ProjectStatics
+    public static class ProjectStatics : System.Object
     {
         public const string UserLocation = "user://";
         public const string SavesFolder = "saves/";

@@ -25,7 +25,12 @@ public partial class GameplayTagDeleteButton : Button
 
     private void OnPressed()
     {
-        editedValue.RemoveTag(GameplayTagsManager.Instance.GetTag(optionButton.GetItemText(optionButton.Selected)));
+        string selectedTag = optionButton.GetItemText(optionButton.Selected);
+        if (!string.IsNullOrEmpty(selectedTag))
+        {
+            editedValue.RemoveTag(GameplayTagsManager.Instance.GetTag(selectedTag));
+        }
+
         itemsContainer.RemoveChild(hBoxContainer);
         hBoxContainer.QueueFree();
     }

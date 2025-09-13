@@ -1,69 +1,68 @@
-using Godot;
 using System;
 using System.Collections.Generic;
+
+using Godot;
 
 namespace GameFramework.GameplayTags
 {
     public delegate void GameplayTagDelegate(GameplayTag tag, int newCount);
 
-    public class GameplayTagCountContainer
+    public partial class GameplayTagCountContainer : GodotObject
     {
-        public Dictionary<GameplayTag, int> GameplayTagCountArray = new();
-        public List<GameplayTag> ExplicitGameplayTags = new();
+        public Dictionary<GameplayTag, int> GameplayTagCountMap { get; private set; } = new Dictionary<GameplayTag, int>();
+        //public Dictionary<GameplayTag, int> ExplicitTagCountMap = new Dictionary<GameplayTag, int>();
+        public GameplayTagContainer ExplicitTags { get; private set; } = new GameplayTagContainer();
+        public Dictionary<GameplayTag, GameplayTagDelegate> GameplayTagEventMap { get; private set; } = new Dictionary<GameplayTag, GameplayTagDelegate>();
 
-        protected Dictionary<GameplayTag, GameplayTagDelegate> GameplayTagEventArray = new();
-        
         public bool UpdateTagCount(GameplayTag tag, int countDelta)
         {
             if (countDelta == 0) return false;
 
-            if (GameplayTagCountArray.ContainsKey(tag))
+            if (GameplayTagCountMap.ContainsKey(tag))
             {
-                GameplayTagCountArray[tag] = Math.Max(GameplayTagCountArray[tag] + countDelta, 0);
+                GameplayTagCountMap[tag] = Math.Max(GameplayTagCountMap[tag] + countDelta, 0);
             }
             else
             {
-                GameplayTagCountArray.Add(tag, Math.Max(countDelta, 0));
+                GameplayTagCountMap.Add(tag, Math.Max(countDelta, 0));
             }
 
-            if (ExplicitGameplayTags.Contains(tag))
+            if (ExplicitTags.HasTag(tag))
             {
-                if (GameplayTagCountArray[tag] == 0)
+                if (GameplayTagCountMap[tag] == 0)
                 {
-                    ExplicitGameplayTags.Remove(tag);
+                    ExplicitTags.RemoveTag(tag);
                 }
             }
-            else if (GameplayTagCountArray[tag] != 0)
+            else if (GameplayTagCountMap[tag] != 0)
             {
-                ExplicitGameplayTags.Add(tag);
+                ExplicitTags.AddTag(tag);
             }
 
-            if (GameplayTagEventArray.ContainsKey(tag))
+            if (GameplayTagEventMap.ContainsKey(tag))
             {
                 List<GameplayTagDelegate> invalidDelegates = null;
-                Delegate[] delegates = GameplayTagEventArray[tag].GetInvocationList();
+                Delegate[] delegates = GameplayTagEventMap[tag].GetInvocationList();
                 for (int i = 0; i < delegates.Length; i++)
                 {
                     if (delegates[i] is not GameplayTagDelegate tagDelegate) continue;
+                    
+                    if (tagDelegate.Target == null)
+                    {
+                        invalidDelegates ??= new List<GameplayTagDelegate>();
+                        invalidDelegates.Add(tagDelegate);
+                        continue;
+                    }
 
-                    //if (tagDelegate.Target is MonoBehaviour behaviour)
-                    //{
-                    //    if (behaviour == null)
-                    //    {
-                    //        invalidDelegates ??= new List<GameplayTagDelegate>();
-                    //        invalidDelegates.Add(tagDelegate);
-                    //        continue;
-                    //    }
-                    //}
-
-                    tagDelegate.Invoke(tag, GameplayTagCountArray[tag]);
+                    tagDelegate.Invoke(tag, GameplayTagCountMap[tag]);
                 }
 
-                if (invalidDelegates == null) return true;
-
-                for (int i = 0; i < invalidDelegates.Count; i++)
+                if (invalidDelegates != null)
                 {
-                    GameplayTagEventArray[tag] -= invalidDelegates[i];
+                    for (int i = 0; i < invalidDelegates.Count; i++)
+                    {
+                        GameplayTagEventMap[tag] -= invalidDelegates[i];
+                    }
                 }
             }
 
@@ -72,13 +71,13 @@ namespace GameFramework.GameplayTags
 
         public void RegisterGameplayTagEvent(GameplayTag tag, GameplayTagDelegate tagDelegate)
         {
-            if (!GameplayTagEventArray.ContainsKey(tag))
+            if (!GameplayTagEventMap.ContainsKey(tag))
             {
-                GameplayTagEventArray.Add(tag, tagDelegate);
+                GameplayTagEventMap.Add(tag, tagDelegate);
                 return;
             }
 
-            GameplayTagEventArray[tag] += tagDelegate;
+            GameplayTagEventMap[tag] += tagDelegate;
         }
     }
 }

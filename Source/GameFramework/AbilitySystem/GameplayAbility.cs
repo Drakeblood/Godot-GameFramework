@@ -23,58 +23,52 @@ namespace GameFramework.AbilitySystem
         /// <summary>
         /// GameplayTags that the GameplayAbility owns. These are just GameplayTags to describe the GameplayAbility.
         /// </summary>
-        [Export]
-        public GameplayTag[] AbilityTags;
+        [Export] public GameplayTagContainer AbilityTags;
 
         /// <summary>
         /// Other GameplayAbilities that have these GameplayTags in their Ability Tags will be canceled when this GameplayAbility is activated.
         /// </summary>
-        [Export]
-        public GameplayTag[] CancelAbilitiesWithTag;
+        [Export] public GameplayTagContainer CancelAbilitiesWithTag;
 
         /// <summary>
         /// Other GameplayAbilities that have these GameplayTags in their Ability Tags are blocked from activating while this GameplayAbility is active.
         /// </summary>
-        [Export]
-        public GameplayTag[] BlockAbilitiesWithTag;
+        [Export] public GameplayTagContainer BlockAbilitiesWithTag;
 
         /// <summary>
         /// These GameplayTags are given to the GameplayAbility's owner while this GameplayAbility is active.
         /// </summary>
-        [Export]
-        public GameplayTag[] ActivationOwnedTags;
+        [Export] public GameplayTagContainer ActivationOwnedTags;
 
         /// <summary>
         /// This GameplayAbility can only be activated if the owner has all of these GameplayTags.
         /// </summary>
-        [Export]
-        public GameplayTag[] ActivationRequiredTags;
+        [Export] public GameplayTagContainer ActivationRequiredTags;
 
         /// <summary>
         /// This GameplayAbility cannot be activated if the owner has any of these GameplayTags.
         /// </summary>
-        [Export]
-        public GameplayTag[] ActivationBlockedTags;
+        [Export] public GameplayTagContainer ActivationBlockedTags;
 
         /// <summary>
         /// This GameplayAbility can only be activated if the Source has all of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.
         /// </summary>
-        [Export] public GameplayTagContainer SourceRequiredTags = new GameplayTagContainer();
+        //[Export] public GameplayTagContainer SourceRequiredTags;
 
         /// <summary>
         /// This GameplayAbility cannot be activated if the Source has any of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.
         /// </summary>
-        //public GameplayTag[] SourceBlockedTags;
+        //[Export] public GameplayTagContainer SourceBlockedTags;
 
         /// <summary>
         /// This GameplayAbility can only be activated if the Target has all of these GameplayTags. The Target GameplayTags are only set if the GameplayAbility is triggered by an event.
         /// </summary>
-        //public GameplayTag[] TargetRequiredTags;
+        //[Export] public GameplayTagContainer TargetRequiredTags;
 
         /// <summary>
         /// This GameplayAbility cannot be activated if the Target has any of these GameplayTags. The Target GameplayTags are only set if the GameplayAbility is triggered by an event.
         /// </summary>
-        //public GameplayTag[] TargetBlockedTags;
+        //[Export] public GameplayTagContainer TargetBlockedTags;
 
         [ExportCategory("Input")]
 
@@ -95,6 +89,13 @@ namespace GameFramework.AbilitySystem
 
         public void SetupAbility(AbilitySystemComponent abilitySystemComponent, object sourceObject = null)
         {
+            AbilityTags ??= new GameplayTagContainer();
+            CancelAbilitiesWithTag ??= new GameplayTagContainer();
+            BlockAbilitiesWithTag ??= new GameplayTagContainer();
+            ActivationOwnedTags ??= new GameplayTagContainer();
+            ActivationRequiredTags ??= new GameplayTagContainer();
+            ActivationBlockedTags ??= new GameplayTagContainer();
+
             AbilitySystemComponent = abilitySystemComponent;
             SourceObject = sourceObject;
 
@@ -108,14 +109,14 @@ namespace GameFramework.AbilitySystem
             if (IsActive) return false;
             Assert.IsNotNull(AbilitySystemComponent, "OwningAbilityManager is not valid");
 
-            if (GameplayTag.HasAny(AbilitySystemComponent.GetBlockedAbilityTags(), AbilityTags)) return false;
+            if (AbilityTags.HasAny(AbilitySystemComponent.GetBlockedAbilityTags())) return false;
 
             if (ActivationBlockedTags.Length > 0 || ActivationRequiredTags.Length > 0)
             {
-                GameplayTag[] AbilityManagerStates = AbilitySystemComponent.GetExplicitGameplayTags();
+                GameplayTagContainer OwnedTags = AbilitySystemComponent.GetOwnedGameplayTags();
 
-                if (GameplayTag.HasAny(AbilityManagerStates, ActivationBlockedTags)) return false;
-                if (!GameplayTag.HasAll(AbilityManagerStates, ActivationRequiredTags)) return false;
+                if (OwnedTags.HasAny(ActivationBlockedTags)) return false;
+                if (!OwnedTags.HasAll(ActivationRequiredTags)) return false;
             }
 
             return true;

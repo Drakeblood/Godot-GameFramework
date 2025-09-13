@@ -21,7 +21,9 @@ public partial class GameplayTagOptionButton : OptionButton
 
     private void OnItemSelected(long index)
     {
-        int addedIndex = editedValue.AddTag(GameplayTagsManager.Instance.GetTag(GetItemText((int)index)));
+        int length = editedValue.Length;
+        editedValue.AddTag(GameplayTagsManager.Instance.GetTag(GetItemText((int)index)));
+        int addedIndex = editedValue.Length > length ? editedValue.Length - 1 : -1;
 
         if (addedIndex != -1)
         {
@@ -29,7 +31,7 @@ public partial class GameplayTagOptionButton : OptionButton
             {
                 editedValue.RemoveTag(selectedTag);
             }
-            selectedTag = editedValue.GameplayTags[editedValue.GameplayTags.Count - 1];
+            selectedTag = editedValue[editedValue.GameplayTags.Count - 1];
         }
         else { Select(selectedTag != null ? GameplayTagEditorProperty.TagNames[selectedTag.TagName] : -1); }
     }

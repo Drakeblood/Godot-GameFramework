@@ -4,30 +4,25 @@
 [ext_resource type="Script" uid="uid://qxixpb1lrxdd" path="res://Source/GameFramework/GameplayTags/GameplayTagContainer.cs" id="1_fwy4w"]
 [ext_resource type="Script" uid="uid://2oktyusonog2" path="res://Example/src/AbilitySystem/GA_Test1.cs" id="1_r0dl4"]
 
-[sub_resource type="Resource" id="Resource_46nhr"]
+[sub_resource type="Resource" id="Resource_3h1nq"]
 script = ExtResource("1_46nhr")
 tagName = &"Character.Dying"
 
-[sub_resource type="Resource" id="Resource_wqh7m"]
-script = ExtResource("1_46nhr")
-tagName = &"Character.Stunned"
+[sub_resource type="Resource" id="Resource_3jpy6"]
+script = ExtResource("1_fwy4w")
+GameplayTags = Array[ExtResource("1_46nhr")]([SubResource("Resource_3h1nq")])
 
-[sub_resource type="Resource" id="Resource_pcwu0"]
+[sub_resource type="Resource" id="Resource_1ojd5"]
 script = ExtResource("1_46nhr")
 tagName = &"Ability"
 
-[sub_resource type="Resource" id="Resource_undko"]
+[sub_resource type="Resource" id="Resource_tt7es"]
 script = ExtResource("1_fwy4w")
-GameplayTags = Array[ExtResource("1_46nhr")]([SubResource("Resource_46nhr"), SubResource("Resource_wqh7m"), SubResource("Resource_pcwu0")])
+GameplayTags = Array[ExtResource("1_46nhr")]([SubResource("Resource_1ojd5")])
 
 [resource]
 script = ExtResource("1_r0dl4")
 a = 25
-AbilityTags = null
-CancelAbilitiesWithTag = null
-BlockAbilitiesWithTag = null
-ActivationOwnedTags = null
-ActivationRequiredTags = null
-ActivationBlockedTags = null
-SourceRequiredTags = SubResource("Resource_undko")
+AbilityTags = SubResource("Resource_3jpy6")
+BlockAbilitiesWithTag = SubResource("Resource_tt7es")
 InputActionName = &"fire"
