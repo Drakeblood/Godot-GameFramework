@@ -30,12 +30,14 @@ namespace GameFramework.Core
 
         public virtual void PostLogin(PlayerController playerController)
         {
-            playerController.Pawn = SpawnPawnAtPlayerStart();
+            playerController.Possess(SpawnPawnAtPlayerStart());
         }
 
         public virtual PlayerController SpawnPlayerController()
         {
-            return GameModeSettings.PlayerControllerScene.Instantiate<PlayerController>();
+            PlayerController playerController = GameModeSettings.PlayerControllerScene.Instantiate<PlayerController>();
+            SceneTree.Root.AddChild(playerController);
+            return playerController;
         }
 
         public virtual Pawn SpawnPawnAtPlayerStart()

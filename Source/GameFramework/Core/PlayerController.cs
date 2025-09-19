@@ -1,16 +1,57 @@
 
+using GameFramework.Assertion;
+using Godot;
+
 namespace GameFramework.Core
 {
     public partial class PlayerController : Controller
     {
         private Player player;
 
-        public Pawn Pawn;
-
         public void SetPlayer(Player player)
         {
             this.player = player;
             player.PlayerController = this;
+        }
+
+        public override void OnPossess(Pawn pawnToPossess)
+        {
+            if (pawnToPossess != null)
+            {
+                bool bNewPawn = (Pawn != pawnToPossess);
+
+                if (Pawn != null && bNewPawn)
+                {
+                    UnPossess();
+                }
+
+                if (pawnToPossess.Controller != null)
+                {
+                    pawnToPossess.Controller.UnPossess();
+                }
+
+                pawnToPossess.PossessedBy(this);
+
+                SetPawn(pawnToPossess);
+                Assert.IsNotNull(Pawn);
+
+                Node CameraNode = Pawn.GetParent().FindChild("Camera");
+                if (CameraNode != null)
+                {
+                    if (CameraNode is Camera3D camera3D) { camera3D.MakeCurrent(); }
+                    else if (CameraNode is Camera2D camera2D) { camera2D.MakeCurrent(); }
+                }
+            }
+        }
+
+        public override void OnUnPossess()
+        {
+            if (Pawn != null)
+            {
+                Pawn.UnPossessed();
+            }
+
+            SetPawn(null);
         }
     }
 }
