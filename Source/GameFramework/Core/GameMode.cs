@@ -1,5 +1,6 @@
-using GameFramework.Assertion;
 using Godot;
+
+using GameFramework.Assertion;
 
 namespace GameFramework.Core
 {
@@ -9,9 +10,9 @@ namespace GameFramework.Core
 
         private GameModeSettings gameModeSettings;
         public GameModeSettings GameModeSettings
-        { 
-            get => gameModeSettings; 
-            set { gameModeSettings = value; } 
+        {
+            get => gameModeSettings;
+            set { gameModeSettings = value; }
         }
 
         /// <summary>
@@ -20,7 +21,7 @@ namespace GameFramework.Core
         public virtual void InitGame(GFSceneTree sceneTree)
         {
             SceneTree = sceneTree;
-            SceneTree.GameInstance.Heroes.Clear(); 
+            SceneTree.GameInstance.Heroes.Clear();
         }
 
         public virtual PlayerController Login(Player player)
@@ -36,14 +37,14 @@ namespace GameFramework.Core
         public virtual PlayerController SpawnPlayerController()
         {
             PlayerController playerController = GameModeSettings.PlayerControllerScene.Instantiate<PlayerController>();
-            SceneTree.Root.AddChild(playerController);
+            SceneTree.CurrentLevel.AddChild(playerController);
             return playerController;
         }
 
         public virtual Pawn SpawnPawnAtPlayerStart()
         {
             Assert.IsNotNull(GameModeSettings.PawnScene, "PawnScene is not valid");
-            
+
             Node newNode = GameModeSettings.PawnScene.Instantiate();
             Pawn pawn = newNode as Pawn;
 
@@ -61,7 +62,7 @@ namespace GameFramework.Core
                 }
             }
 
-            Assert.IsNotNull(pawn, "Pawn was not found.");
+            Assert.IsNotNull(pawn, "Pawn was not found. Please add Node with Pawn script to your hero scene.");
             SceneTree.CurrentLevel.AddChild(newNode);
 
             SceneTree.CurrentLevel.PreparePlayerStartsLocation();
@@ -79,7 +80,7 @@ namespace GameFramework.Core
                     player3D.Rotation = SceneTree.CurrentLevel.PlayerStartsRotations[0];
                 }
             }
-            
+
             return pawn;
         }
     }

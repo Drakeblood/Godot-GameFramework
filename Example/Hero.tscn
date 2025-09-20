@@ -17,12 +17,14 @@ script = ExtResource("1_7yv3s")
 x = SubResource("Resource_t00t6")
 huC = Array[String](["123", "321"])
 
+[node name="Pawn" type="Node" parent="."]
+script = ExtResource("4_2wii5")
+
+[node name="Camera" type="Camera2D" parent="."]
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_s0bb6")
 
 [node name="ASC" type="Node" parent="."]
 script = ExtResource("2_v8ooj")
 startupAbilities = Array[ExtResource("5_t00t6")]([ExtResource("3_4xvfx")])
-
-[node name="Pawn" type="Node" parent="."]
-script = ExtResource("4_2wii5")

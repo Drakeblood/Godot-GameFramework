@@ -1,11 +1,12 @@
+using Godot;
 
 using GameFramework.Assertion;
-using Godot;
 
 namespace GameFramework.Core
 {
     public partial class PlayerController : Controller
     {
+        [Export] public bool AutoManageActiveCameraTarget = true;
         private Player player;
 
         public void SetPlayer(Player player)
@@ -35,11 +36,14 @@ namespace GameFramework.Core
                 SetPawn(pawnToPossess);
                 Assert.IsNotNull(Pawn);
 
-                Node CameraNode = Pawn.GetParent().FindChild("Camera");
-                if (CameraNode != null)
+                if (AutoManageActiveCameraTarget)
                 {
-                    if (CameraNode is Camera3D camera3D) { camera3D.MakeCurrent(); }
-                    else if (CameraNode is Camera2D camera2D) { camera2D.MakeCurrent(); }
+                    Node CameraNode = Pawn.GetParent().FindChild("Camera");
+                    if (CameraNode != null)
+                    {
+                        if (CameraNode is Camera3D camera3D) { camera3D.MakeCurrent(); }
+                        else if (CameraNode is Camera2D camera2D) { camera2D.MakeCurrent(); }
+                    }
                 }
             }
         }
