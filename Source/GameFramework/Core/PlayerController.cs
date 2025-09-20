@@ -41,10 +41,20 @@ namespace GameFramework.Core
                     Node CameraNode = Pawn.GetParent().FindChild("Camera");
                     if (CameraNode != null)
                     {
-                        if (CameraNode is Camera3D camera3D) { camera3D.MakeCurrent(); }
-                        else if (CameraNode is Camera2D camera2D) { camera2D.MakeCurrent(); }
+                        if (CameraNode.IsInsideTree()) { SetPawnCameraNodeAsCurrent(); }
+                        else { CallDeferred("SetPawnCameraNodeAsCurrent"); }  
                     }
                 }
+            }
+        }
+
+        private void SetPawnCameraNodeAsCurrent()
+        {
+            Node CameraNode = Pawn.GetParent().FindChild("Camera");
+            if (CameraNode != null && CameraNode.IsInsideTree())
+            {
+                if (CameraNode is Camera3D camera3D) { camera3D.MakeCurrent(); }
+                else if (CameraNode is Camera2D camera2D) { camera2D.MakeCurrent(); }
             }
         }
 
