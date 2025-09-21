@@ -29,9 +29,9 @@ public partial class Hero : Node2D, IPawn
 
     public void SetupInputComponent(InputComponent inputComponent) 
     {
-        inputComponent.BindAction("fire", TriggerEvent.Started, () => { GD.Print("Fire started: " + Name); });
-        inputComponent.BindAction("fire", TriggerEvent.Triggered, () => { GD.Print("Fire triggered: " + Name); });
-        inputComponent.BindAction("fire", TriggerEvent.Completed, () => { GD.Print("Fire completed: " + Name); });
+        inputComponent.BindAction("fire", TriggerEvent.Started, () => { GD.Print(string.Format("Fire started {0}: {1}", frameCounter, Name)); });
+        inputComponent.BindAction("fire", TriggerEvent.Triggered, () => { GD.Print(string.Format("Fire triggered {0}: {1}", frameCounter, Name)); });
+        inputComponent.BindAction("fire", TriggerEvent.Completed, () => { GD.Print(string.Format("Fire completed {0}: {1}", frameCounter, Name)); });
 
         inputComponent.BindAction("switchPawn", TriggerEvent.Started, () =>
         {

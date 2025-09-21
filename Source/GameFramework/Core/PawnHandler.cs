@@ -1,6 +1,5 @@
 using Godot;
 
-using GameFramework.Assertion;
 using GameFramework.Core;
 
 public partial class PawnHandler : Node
@@ -11,17 +10,6 @@ public partial class PawnHandler : Node
     public IPawn Pawn { get; private set; }
     protected InputComponent InputComponent;
 
-    public override void _Ready()
-    {
-        SetProcess(false);
-    }
-
-    public override void _Process(double delta)
-    {
-        Assert.IsNotNull(InputComponent);
-        InputComponent.UpdateInput();
-    }
-
     public virtual void PossessedBy(Controller NewController)
     {
         Controller = NewController;
@@ -31,11 +19,13 @@ public partial class PawnHandler : Node
         {
             Pawn.PossessedBy(Controller);
 
-            if (InputComponent == null) { InputComponent = new InputComponent(); }
-            Pawn.SetupInputComponent(InputComponent);
+            if (InputComponent == null) 
+            { 
+                InputComponent = new InputComponent();
+                GetNode<Node>(PawnNodePath).AddChild(InputComponent);
+            }
 
-            if (!IsInsideTree()) { CallDeferred(Node.MethodName.SetProcess, true); }
-            else { SetProcess(true); }
+            Pawn.SetupInputComponent(InputComponent);
         }
     }
 
@@ -45,10 +35,14 @@ public partial class PawnHandler : Node
 
         if (InputComponent != null)
         {
-            InputComponent.RemoveAllBindings();
-            InputComponent = null;
+            CallDeferred("ClearInputComponent");
         }
+    }
 
-        SetProcess(false);
+    private void ClearInputComponent()
+    {
+        InputComponent.RemoveAllBindings();
+        InputComponent.QueueFree();
+        InputComponent = null;
     }
 }

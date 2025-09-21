@@ -1,13 +1,19 @@
-using Godot;
 using System;
 using System.Collections.Generic;
 
-public class InputComponent
+using Godot;
+
+public partial class InputComponent : Node
 {
     public bool Enabled = true;
     private List<ActionInputBinding> bindings = new List<ActionInputBinding>();
 
-    public virtual void UpdateInput()
+    public override void _Ready()
+    {
+        UpdateProcessStatus();
+    }
+
+    public override void _Process(double delta)
     {
         if (!Enabled) { return; }
 
@@ -33,17 +39,24 @@ public class InputComponent
 
     public virtual void BindAction(StringName actionName, TriggerEvent triggerEvent, Action action)
     {
+        bool found = false;
         for (int i = 0; i < bindings.Count; i++)
         {
             if (bindings[i].ActionName == actionName)
             {
                 bindings[i].AddBinding(triggerEvent, action);
-                return;
+                found = true;
+                break;
             }
         }
 
-        bindings.Add(new ActionInputBinding(actionName));
-        bindings[bindings.Count - 1].AddBinding(triggerEvent, action);
+        if (!found)
+        {
+            bindings.Add(new ActionInputBinding(actionName));
+            bindings[bindings.Count - 1].AddBinding(triggerEvent, action);
+        }
+
+        UpdateProcessStatus();
     }
 
     public virtual void RemoveBinding(StringName actionName, TriggerEvent triggerEvent, Action action)
@@ -53,9 +66,10 @@ public class InputComponent
             if (bindings[i].ActionName == actionName)
             {
                 bindings[i].RemoveBinding(triggerEvent, action);
-                return;
+                break;
             }
         }
+        UpdateProcessStatus();
     }
 
     public virtual void RemoveBinding(StringName actionName)
@@ -65,9 +79,10 @@ public class InputComponent
             if (bindings[i].ActionName == actionName)
             {
                 bindings.RemoveAt(i);
-                return;
+                break;
             }
         }
+        UpdateProcessStatus();
     }
 
     public bool IsActionPressed(StringName actionName)
@@ -84,9 +99,23 @@ public class InputComponent
 
     public void RemoveAllBindings()
     {
-        for (int i = 0; i < bindings.Count; i++)
+        for (int i = bindings.Count - 1; i >= 0; i--)
         {
             bindings[i].RemoveAllBindings();
         }
+        bindings.Clear();
+        UpdateProcessStatus();
+    }
+
+    private void UpdateProcessStatus()
+    {
+        bool shouldProcess = false;
+
+        if (bindings.Count > 0)
+        {
+            shouldProcess = true;
+        }
+
+        if (shouldProcess != IsProcessing()) { SetProcess(shouldProcess); }
     }
 }
