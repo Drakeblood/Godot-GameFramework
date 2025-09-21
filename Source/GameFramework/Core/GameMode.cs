@@ -41,24 +41,20 @@ namespace GameFramework.Core
             return playerController;
         }
 
-        public virtual Pawn SpawnPawnAtPlayerStart()
+        public virtual PawnHandler SpawnPawnAtPlayerStart()
         {
             Assert.IsNotNull(GameModeSettings.PawnScene, "PawnScene is not valid");
 
             Node newNode = GameModeSettings.PawnScene.Instantiate();
-            Pawn pawn = newNode as Pawn;
+            PawnHandler pawn = null;
+            var children = newNode.GetChildren();
 
-            if (pawn == null)
+            for (int i = 0; i < children.Count; i++)
             {
-                var children = newNode.GetChildren();
-
-                for (int i = 0; i < children.Count; i++)
+                if (children[i] is PawnHandler)
                 {
-                    if (children[i] is Pawn)
-                    {
-                        pawn = (Pawn)children[i];
-                        break;
-                    }
+                    pawn = (PawnHandler)children[i];
+                    break;
                 }
             }
 

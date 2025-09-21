@@ -1,6 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://cjwekea3gl6pk"]
 
-[ext_resource type="Script" uid="uid://c5ckufprc38nj" path="res://Source/GameFramework/Core/Pawn.cs" id="1_xtb1j"]
+[ext_resource type="Script" uid="uid://cm2o507twm832" path="res://Source/GameFramework/Core/PawnHandler.cs" id="1_xtb1j"]
 
 [node name="DefaultPawn" type="Node"]
+
+[node name="PawnHandler" type="Node" parent="."]
 script = ExtResource("1_xtb1j")
+PawnNodePath = NodePath("..")

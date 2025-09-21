@@ -1,6 +1,6 @@
 namespace GameFramework.Core
 {
-    public partial class SaveGame : System.Object
+    public partial class SaveGame
     {
         //public int Money { get; set; }
 

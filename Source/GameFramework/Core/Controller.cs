@@ -4,50 +4,50 @@ namespace GameFramework.Core
 {
     public partial class Controller : Node
     {
-        public Pawn Pawn { get; private set; }
+        public PawnHandler PawnHandler { get; private set; }
 
-        public virtual void SetPawn(Pawn inPawn)
+        public virtual void SetPawnHandler(PawnHandler inPawnHandler)
         {
-            Pawn = inPawn;
+            PawnHandler = inPawnHandler;
         }
 
-        public void Possess(Pawn inPawn)
+        public void Possess(PawnHandler inPawnHandler)
         {
-            Pawn CurrentPawn = Pawn;
+            PawnHandler CurrentPawn = PawnHandler;
 
-            OnPossess(inPawn);
+            OnPossess(inPawnHandler);
         }
 
         public void UnPossess()
         {
-            Pawn CurrentPawn = Pawn;
+            PawnHandler CurrentPawn = PawnHandler;
             if (CurrentPawn == null) { return; }
 
             OnUnPossess();
         }
 
-        public virtual void OnPossess(Pawn inPawn)
+        public virtual void OnPossess(PawnHandler inPawnHandler)
         {
-            bool bNewPawn = Pawn != inPawn;
+            bool bNewPawnHandler = PawnHandler != inPawnHandler;
 
-            if (bNewPawn && Pawn != null) { UnPossess(); }
-            if (inPawn == null) { return; }
+            if (bNewPawnHandler && PawnHandler != null) { UnPossess(); }
+            if (inPawnHandler == null) { return; }
 
-            if (inPawn.Controller != null)
+            if (inPawnHandler.Controller != null)
             {
-                inPawn.Controller.UnPossess();
+                inPawnHandler.Controller.UnPossess();
             }
 
-            inPawn.PossessedBy(this);
-            SetPawn(inPawn);
+            inPawnHandler.PossessedBy(this);
+            SetPawnHandler(inPawnHandler);
         }
 
         public virtual void OnUnPossess()
         {
-            if (Pawn != null)
+            if (PawnHandler != null)
             {
-                Pawn.UnPossessed();
-                SetPawn(null);
+                PawnHandler.UnPossessed();
+                SetPawnHandler(null);
             }
         }
     }

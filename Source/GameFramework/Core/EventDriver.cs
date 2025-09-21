@@ -4,7 +4,7 @@ using static GameFramework.Core.EventDriver;
 
 namespace GameFramework.Core
 {
-    public static class EventDriver : System.Object
+    public static class EventDriver
     {
         private static readonly Dictionary<string, MessageDelegate> Listeners = new();
         public delegate void MessageDelegate(string InChannel, object Data);

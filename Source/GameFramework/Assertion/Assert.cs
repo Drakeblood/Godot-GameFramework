@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace GameFramework.Assertion
 {
-    public static class Assert : System.Object
+    public static class Assert
     {
         [Conditional("DEBUG")]
         public static void IsTrue(bool condition, string message = "")

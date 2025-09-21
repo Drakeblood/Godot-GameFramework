@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b7b102wvo5rfr"]
+[gd_scene load_steps=4 format=3 uid="uid://b7b102wvo5rfr"]
 
 [ext_resource type="Script" uid="uid://caxl4eq32extd" path="res://Example/src/Level0.cs" id="1_x5jyq"]
 [ext_resource type="Resource" uid="uid://b5e2xvcvkfol7" path="res://Example/GM_Level0.tres" id="2_h5bu8"]
+[ext_resource type="PackedScene" uid="uid://dpbe7vguyo23h" path="res://Example/Hero.tscn" id="3_p62t8"]
 
 [node name="Level0" type="Node"]
 script = ExtResource("1_x5jyq")
@@ -19,3 +20,6 @@ text = "Main menu
 [node name="PlayerStart" type="Marker2D" parent="."]
 position = Vector2(173, 461)
 gizmo_extents = 20.0
+
+[node name="Hero2" parent="." instance=ExtResource("3_p62t8")]
+position = Vector2(633, 473)

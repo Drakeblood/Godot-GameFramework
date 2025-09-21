@@ -7,21 +7,22 @@ namespace GameFramework.Core
     public partial class PlayerController : Controller
     {
         [Export] public bool AutoManageActiveCameraTarget = true;
-        private Player player;
+        protected Player Player;
+        protected InputComponent InputComponent = new InputComponent();
 
         public void SetPlayer(Player player)
         {
-            this.player = player;
+            this.Player = player;
             player.PlayerController = this;
         }
 
-        public override void OnPossess(Pawn pawnToPossess)
+        public override void OnPossess(PawnHandler pawnToPossess)
         {
             if (pawnToPossess != null)
             {
-                bool bNewPawn = (Pawn != pawnToPossess);
+                bool bNewPawn = (PawnHandler != pawnToPossess);
 
-                if (Pawn != null && bNewPawn)
+                if (PawnHandler != null && bNewPawn)
                 {
                     UnPossess();
                 }
@@ -33,12 +34,12 @@ namespace GameFramework.Core
 
                 pawnToPossess.PossessedBy(this);
 
-                SetPawn(pawnToPossess);
-                Assert.IsNotNull(Pawn);
+                SetPawnHandler(pawnToPossess);
+                Assert.IsNotNull(PawnHandler);
 
                 if (AutoManageActiveCameraTarget)
                 {
-                    Node CameraNode = Pawn.GetParent().FindChild("Camera");
+                    Node CameraNode = PawnHandler.GetParent().FindChild("Camera");
                     if (CameraNode != null)
                     {
                         if (CameraNode.IsInsideTree()) { SetPawnCameraNodeAsCurrent(); }
@@ -50,7 +51,7 @@ namespace GameFramework.Core
 
         private void SetPawnCameraNodeAsCurrent()
         {
-            Node CameraNode = Pawn.GetParent().FindChild("Camera");
+            Node CameraNode = PawnHandler.GetParent().FindChild("Camera");
             if (CameraNode != null && CameraNode.IsInsideTree())
             {
                 if (CameraNode is Camera3D camera3D) { camera3D.MakeCurrent(); }
@@ -60,12 +61,12 @@ namespace GameFramework.Core
 
         public override void OnUnPossess()
         {
-            if (Pawn != null)
+            if (PawnHandler != null)
             {
-                Pawn.UnPossessed();
+                PawnHandler.UnPossessed();
             }
 
-            SetPawn(null);
+            SetPawnHandler(null);
         }
     }
 }

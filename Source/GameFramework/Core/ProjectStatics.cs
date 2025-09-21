@@ -7,7 +7,7 @@ using GameFramework.Assertion;
 
 namespace GameFramework.Core
 {
-    public static class ProjectStatics : System.Object
+    public static class ProjectStatics
     {
         public const string UserLocation = "user://";
         public const string SavesFolder = "saves/";
@@ -88,36 +88,16 @@ namespace GameFramework.Core
             }
         }
 
-        public static T GetGameInstance<T>(SceneTree sceneTree) where T : GameInstance
+        private static GFSceneTree GetGFSceneTree(SceneTree sceneTree)
         {
             GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
             Assert.IsNotNull(gfSceneTree, "GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
-
-            return gfSceneTree.GameInstance as T;
+            return gfSceneTree;
         }
 
-        public static T GetGameMode<T>(SceneTree sceneTree) where T : GameMode
-        {
-            GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
-            Assert.IsNotNull(gfSceneTree, "GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
-
-            return gfSceneTree.GameMode as T;
-        }
-
-        public static T GetLevel<T>(SceneTree sceneTree) where T : Level
-        {
-            GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
-            Assert.IsNotNull(gfSceneTree, "GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
-
-            return gfSceneTree.CurrentLevel as T;
-        }
-
-        public static void OpenLevel(SceneTree sceneTree, string resourcePath)
-        {
-            GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
-            Assert.IsNotNull(gfSceneTree, "GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
-
-            gfSceneTree.OpenLevel(resourcePath);
-        }
+        public static T GetGameInstance<T>(SceneTree sceneTree) where T : GameInstance => GetGFSceneTree(sceneTree).GameInstance as T;
+        public static T GetGameMode<T>(SceneTree sceneTree) where T : GameMode => GetGFSceneTree(sceneTree).GameMode as T;
+        public static T GetLevel<T>(SceneTree sceneTree) where T : Level => GetGFSceneTree(sceneTree).CurrentLevel as T;
+        public static void OpenLevel(SceneTree sceneTree, string resourcePath) => GetGFSceneTree(sceneTree).OpenLevel(resourcePath);
     }
 }

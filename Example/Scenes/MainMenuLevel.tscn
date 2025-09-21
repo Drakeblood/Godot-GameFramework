@@ -1,9 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://do86p7nmgrgsn"]
+[gd_scene load_steps=7 format=3 uid="uid://do86p7nmgrgsn"]
 
 [ext_resource type="Script" uid="uid://du4laestvu32x" path="res://Example/src/MainMenuLevel.cs" id="1_utjao"]
+[ext_resource type="Script" uid="uid://ljdvasqn5f8g" path="res://Source/GameFramework/Core/GameMode.cs" id="2_s2s7v"]
+[ext_resource type="PackedScene" uid="uid://cjwekea3gl6pk" path="res://Content/GameFramework/DefaultPawnScene.tscn" id="3_yaarf"]
+[ext_resource type="PackedScene" uid="uid://hq6jeyhxb0m2" path="res://Content/GameFramework/DefaultPlayerControllerScene.tscn" id="4_mmvu8"]
+[ext_resource type="Script" uid="uid://gnrprgt87fcg" path="res://Source/GameFramework/Core/GameModeSettings.cs" id="5_w5jbj"]
+
+[sub_resource type="Resource" id="Resource_ljhoe"]
+script = ExtResource("5_w5jbj")
+GameModeScript = ExtResource("2_s2s7v")
+PawnScene = ExtResource("3_yaarf")
+PlayerControllerScene = ExtResource("4_mmvu8")
+metadata/_custom_type_script = "uid://gnrprgt87fcg"
 
 [node name="MainMenuLevel" type="Node"]
 script = ExtResource("1_utjao")
+GameModeSettingsOverride = SubResource("Resource_ljhoe")
 
 [node name="Button" type="Button" parent="."]
 offset_left = 412.0
