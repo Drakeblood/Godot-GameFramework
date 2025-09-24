@@ -5,46 +5,17 @@ using Godot;
 
 public partial class InputComponent : Node
 {
-    public bool Enabled = true;
-    private List<ActionInputBinding> bindings = new List<ActionInputBinding>();
-
-    public override void _Ready()
-    {
-        UpdateProcessStatus();
-    }
-
-    public override void _Process(double delta)
-    {
-        if (!Enabled) { return; }
-
-        for (int i = 0; i < bindings.Count; i++)
-        {
-            if (Input.IsActionJustPressed(bindings[i].ActionName))
-            {
-                bindings[i].Pressed = true;
-                bindings[i].Execute(TriggerEvent.Started);
-                bindings[i].Execute(TriggerEvent.Triggered);
-            }
-            else if (Input.IsActionPressed(bindings[i].ActionName))
-            {
-                bindings[i].Execute(TriggerEvent.Triggered);
-            }
-            else if (Input.IsActionJustReleased(bindings[i].ActionName))
-            {
-                bindings[i].Pressed = false;
-                bindings[i].Execute(TriggerEvent.Completed);
-            }
-        }
-    }
+    public bool Enabled { get; set; } = true;
+    public List<ActionInputBinding> Bindings {  get; set; } = new List<ActionInputBinding>();
 
     public virtual void BindAction(StringName actionName, TriggerEvent triggerEvent, Action action)
     {
         bool found = false;
-        for (int i = 0; i < bindings.Count; i++)
+        for (int i = 0; i < Bindings.Count; i++)
         {
-            if (bindings[i].ActionName == actionName)
+            if (Bindings[i].ActionName == actionName)
             {
-                bindings[i].AddBinding(triggerEvent, action);
+                Bindings[i].AddBinding(triggerEvent, action);
                 found = true;
                 break;
             }
@@ -52,70 +23,53 @@ public partial class InputComponent : Node
 
         if (!found)
         {
-            bindings.Add(new ActionInputBinding(actionName));
-            bindings[bindings.Count - 1].AddBinding(triggerEvent, action);
+            var newBinding = new ActionInputBinding(actionName);
+            newBinding.AddBinding(triggerEvent, action);
+            Bindings.Add(newBinding);
         }
-
-        UpdateProcessStatus();
     }
 
     public virtual void RemoveBinding(StringName actionName, TriggerEvent triggerEvent, Action action)
     {
-        for (int i = 0; i < bindings.Count; i++)
+        for (int i = 0; i < Bindings.Count; i++)
         {
-            if (bindings[i].ActionName == actionName)
+            if (Bindings[i].ActionName == actionName)
             {
-                bindings[i].RemoveBinding(triggerEvent, action);
+                Bindings[i].RemoveBinding(triggerEvent, action);
                 break;
             }
         }
-        UpdateProcessStatus();
     }
 
     public virtual void RemoveBinding(StringName actionName)
     {
-        for (int i = 0; i < bindings.Count; i++)
+        for (int i = 0; i < Bindings.Count; i++)
         {
-            if (bindings[i].ActionName == actionName)
+            if (Bindings[i].ActionName == actionName)
             {
-                bindings.RemoveAt(i);
+                Bindings.RemoveAt(i);
                 break;
             }
         }
-        UpdateProcessStatus();
-    }
-
-    public bool IsActionPressed(StringName actionName)
-    {
-        for (int i = 0; i < bindings.Count; i++)
-        {
-            if (bindings[i].ActionName == actionName)
-            {
-                return bindings[i].Pressed;
-            }
-        }
-        return false;
     }
 
     public void RemoveAllBindings()
     {
-        for (int i = bindings.Count - 1; i >= 0; i--)
+        for (int i = Bindings.Count - 1; i >= 0; i--)
         {
-            bindings[i].RemoveAllBindings();
+            Bindings[i].RemoveAllBindings();
         }
-        bindings.Clear();
-        UpdateProcessStatus();
+        Bindings.Clear();
     }
 
-    private void UpdateProcessStatus()
+    public bool IsActionPressed(StringName actionName)
     {
-        bool shouldProcess = false;
+        if (!Enabled) return false;
 
-        if (bindings.Count > 0)
+        for (int i = 0; i < Bindings.Count; i++)
         {
-            shouldProcess = true;
+            if (Bindings[i].Pressed && Bindings[i].ActionName == actionName) { return true; }
         }
-
-        if (shouldProcess != IsProcessing()) { SetProcess(shouldProcess); }
+        return false;
     }
 }

@@ -13,25 +13,40 @@ public partial class PawnHandler : Node
     public virtual void PossessedBy(Controller NewController)
     {
         Controller = NewController;
-        Pawn = GetNodeOrNull<IPawn>(PawnNodePath);
 
+        Pawn = GetNodeOrNull<IPawn>(PawnNodePath);
         if (Pawn != null)
         {
             Pawn.PossessedBy(Controller);
+        }
 
-            if (InputComponent == null) 
-            { 
+        if (NewController is PlayerController playerController)
+        {
+            if (InputComponent == null)
+            {
                 InputComponent = new InputComponent();
                 GetNode<Node>(PawnNodePath).AddChild(InputComponent);
             }
 
+            playerController.RegisterInputComponent(InputComponent);
             Pawn.SetupInputComponent(InputComponent);
         }
+        
     }
 
     public virtual void UnPossessed()
     {
+        if (Controller is PlayerController playerController)
+        {
+            playerController.UnregisterInputComponent(InputComponent);
+        }
+
         Controller = null;
+
+        if (Pawn != null)
+        {
+            Pawn.UnPossessed();
+        }
 
         if (InputComponent != null)
         {
@@ -41,6 +56,7 @@ public partial class PawnHandler : Node
 
     private void ClearInputComponent()
     {
+        InputComponent.Enabled = false;
         InputComponent.RemoveAllBindings();
         InputComponent.QueueFree();
         InputComponent = null;

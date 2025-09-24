@@ -47,8 +47,9 @@ namespace GameFramework.Core
             if (PawnHandler != null)
             {
                 PawnHandler.UnPossessed();
-                SetPawnHandler(null);
             }
+
+            SetPawnHandler(null);
         }
     }
 }

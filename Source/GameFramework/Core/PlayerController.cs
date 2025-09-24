@@ -1,6 +1,6 @@
-using Godot;
-
 using GameFramework.Assertion;
+using Godot;
+using System.Collections.Generic;
 
 namespace GameFramework.Core
 {
@@ -8,7 +8,54 @@ namespace GameFramework.Core
     {
         [Export] public bool AutoManageActiveCameraTarget = true;
         protected Player Player;
-        protected InputComponent InputComponent = new InputComponent();
+        protected InputComponent InputComponent;
+        private List<InputComponent> currentInputStack = new List<InputComponent>();
+
+        public override void _EnterTree()
+        {
+            //InputComponent = new InputComponent();
+            //AddChild(InputComponent);
+            //RegisterInputComponent(InputComponent);
+        }
+
+        public override void _Process(double delta)
+        {
+            for (int i = currentInputStack.Count - 1; i >= 0; i--)
+            {
+                if (!currentInputStack[i].Enabled) { continue; }
+
+                for (int j = 0; j < currentInputStack[i].Bindings.Count; j++)
+                {
+                    if (Input.IsActionPressed(currentInputStack[i].Bindings[j].ActionName))
+                    {
+                        currentInputStack[i].Bindings[j].Execute(TriggerEvent.Triggered);
+                    }
+                }
+            }
+        }
+
+        public override void _Input(InputEvent @event)
+        {
+            for (int i = currentInputStack.Count - 1; i >= 0; i--)
+            {
+                if (!currentInputStack[i].Enabled) { continue; }
+
+                for (int j = 0; j < currentInputStack[i].Bindings.Count; j++)
+                {
+                    if (Input.IsActionJustPressed(currentInputStack[i].Bindings[j].ActionName))
+                    {
+                        currentInputStack[i].Bindings[j].Pressed = true;
+                        currentInputStack[i].Bindings[j].Execute(TriggerEvent.Started);
+                        currentInputStack[i].Bindings[j].Execute(TriggerEvent.Triggered);
+                    }
+                    else if (Input.IsActionJustReleased(currentInputStack[i].Bindings[j].ActionName))
+                    {
+                        currentInputStack[i].Bindings[j].Pressed = false;
+                        currentInputStack[i].Bindings[j].Execute(TriggerEvent.Completed);
+                    }
+                }
+            }
+        }
 
         public void SetPlayer(Player player)
         {
@@ -39,17 +86,17 @@ namespace GameFramework.Core
 
                 if (AutoManageActiveCameraTarget)
                 {
-                    Node CameraNode = PawnHandler.GetParent().FindChild("Camera");
+                    Node CameraNode = GetParent().FindChild("Camera");
                     if (CameraNode != null)
                     {
                         if (CameraNode.IsInsideTree()) { SetPawnCameraNodeAsCurrent(); }
-                        else { CallDeferred("SetPawnCameraNodeAsCurrent"); }  
+                        else { CallDeferred("SetPawnCameraNodeAsCurrent"); }
                     }
                 }
             }
         }
 
-        private void SetPawnCameraNodeAsCurrent()
+        public void SetPawnCameraNodeAsCurrent()
         {
             Node CameraNode = PawnHandler.GetParent().FindChild("Camera");
             if (CameraNode != null && CameraNode.IsInsideTree())
@@ -67,6 +114,19 @@ namespace GameFramework.Core
             }
 
             SetPawnHandler(null);
+        }
+
+        public void RegisterInputComponent(InputComponent input)
+        {
+            if (!currentInputStack.Contains(input))
+            {
+                currentInputStack.Add(input);
+            }
+        }
+
+        public void UnregisterInputComponent(InputComponent input)
+        {
+            currentInputStack.Remove(input);
         }
     }
 }

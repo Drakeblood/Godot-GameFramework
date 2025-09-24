@@ -27,6 +27,9 @@ public partial class Hero : Node2D, IPawn
         frameCounter++;
     }
 
+    public void PossessedBy(Controller NewController) { GD.Print("PossesedBy: " + Name); }
+    public void UnPossessed() { GD.Print("UnPossessed: " + Name); }
+
     public void SetupInputComponent(InputComponent inputComponent) 
     {
         inputComponent.BindAction("fire", TriggerEvent.Started, () => { GD.Print(string.Format("Fire started {0}: {1}", frameCounter, Name)); });
