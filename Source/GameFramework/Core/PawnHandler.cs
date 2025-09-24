@@ -29,7 +29,10 @@ public partial class PawnHandler : Node
             }
 
             playerController.RegisterInputComponent(InputComponent);
-            Pawn.SetupInputComponent(InputComponent);
+            if (Pawn != null)
+            {
+                Pawn.SetupInputComponent(InputComponent);
+            }
         }
         
     }
