@@ -18,23 +18,19 @@ public partial class PawnHandler : Node
         if (Pawn != null)
         {
             Pawn.PossessedBy(Controller);
-        }
 
-        if (NewController is PlayerController playerController)
-        {
-            if (InputComponent == null)
+            if (NewController is PlayerController playerController)
             {
-                InputComponent = new InputComponent();
-                GetNode<Node>(PawnNodePath).AddChild(InputComponent);
-            }
+                if (InputComponent == null)
+                {
+                    InputComponent = new InputComponent();
+                    GetNode<Node>(PawnNodePath).AddChild(InputComponent);
+                }
 
-            playerController.RegisterInputComponent(InputComponent);
-            if (Pawn != null)
-            {
+                playerController.RegisterInputComponent(InputComponent);
                 Pawn.SetupInputComponent(InputComponent);
             }
         }
-        
     }
 
     public virtual void UnPossessed()

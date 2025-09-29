@@ -11,8 +11,7 @@ namespace GameFramework.AbilitySystem
 {
     public partial class AbilitySystemComponent : Node
     {
-        [Export] 
-        private Array<GameplayAbility> startupAbilities = new Array<GameplayAbility>();
+        [Export] private Array<GameplayAbility> startupAbilities = new Array<GameplayAbility>();
         protected List<GameplayAbility> ActivatableAbilities = new List<GameplayAbility>();//TO DO: Implemet AbilitySpec and AbilitySpecHandle
 
         protected GameplayTagCountContainer GameplayTagCountContainer = new GameplayTagCountContainer();
@@ -96,6 +95,17 @@ namespace GameFramework.AbilitySystem
 
         #endregion
 
+        #region Effects
+
+        public void ApplyGameplayEffectToSelf(GameplayEffect effectTemplate)
+        {
+            //Assert.IsNotNull(effectTemplate, "Effect template is not vaild");
+
+            //GameplayEffect ability = effectTemplate.Duplicate() as GameplayEffect;
+        }
+
+        #endregion
+
         #region GameplayTags
 
         public GameplayTagContainer GetOwnedGameplayTags() => GameplayTagCountContainer.ExplicitTags;
@@ -105,9 +115,11 @@ namespace GameFramework.AbilitySystem
         {
             if (GameplayTagCountContainer.UpdateTagCount(tag, countDelta))
             {
-                //OnTagUpdated
+                OnTagUpdated(tag, countDelta > 0);
             }
         }
+
+        public virtual void OnTagUpdated(GameplayTag tag, bool tagExists) { }
 
         public void RegisterGameplayTagEvent(GameplayTag tag, GameplayTagDelegate tagDelegate)
         {
@@ -123,33 +135,37 @@ namespace GameFramework.AbilitySystem
 
         #region Input
 
-        public override void _UnhandledInput(InputEvent @event)
+        public void AbilityLocalInputPressed(StringName actionName)
         {
-            if (@event.IsActionType())
+            for (int i = 0; i < ActivatableAbilities.Count; i++)
             {
-                for (int i = 0; i < ActivatableAbilities.Count; i++)
+                if (actionName == ActivatableAbilities[i].InputActionName)
                 {
-                    if (@event.IsActionPressed(ActivatableAbilities[i].InputActionName))
-                    {
-                        ActivatableAbilities[i].IsInputPressed = true;
+                    ActivatableAbilities[i].IsInputPressed = true;
 
-                        if (ActivatableAbilities[i].IsActive)
-                        {
-                            ActivatableAbilities[i].InputPressed();
-                        }
-                        else
-                        {
-                            TryActivateAbility(ActivatableAbilities[i].GetType());
-                        }
+                    if (ActivatableAbilities[i].IsActive)
+                    {
+                        ActivatableAbilities[i].InputPressed();
                     }
-                    else if (@event.IsActionReleased(ActivatableAbilities[i].InputActionName))
+                    else
                     {
-                        ActivatableAbilities[i].IsInputPressed = false;
+                        TryActivateAbility(ActivatableAbilities[i].GetType());
+                    }
+                }
+            }
+        }
 
-                        if (ActivatableAbilities[i].IsActive)
-                        {
-                            ActivatableAbilities[i].InputReleased();
-                        }
+        public void AbilityLocalInputReleased(StringName actionName)
+        {
+            for (int i = 0; i < ActivatableAbilities.Count; i++)
+            {
+                if (actionName == ActivatableAbilities[i].InputActionName)
+                {
+                    ActivatableAbilities[i].IsInputPressed = false;
+
+                    if (ActivatableAbilities[i].IsActive)
+                    {
+                        ActivatableAbilities[i].InputReleased();
                     }
                 }
             }

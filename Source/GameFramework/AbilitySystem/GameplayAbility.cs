@@ -21,59 +21,58 @@ namespace GameFramework.AbilitySystem
         [ExportCategory("Tags")]
 
         /// <summary>
-        /// GameplayTags that the GameplayAbility owns. These are just GameplayTags to describe the GameplayAbility.
+        /// This ability has these tags
         /// </summary>
         [Export] public GameplayTagContainer AbilityTags;
 
         /// <summary>
-        /// Other GameplayAbilities that have these GameplayTags in their Ability Tags will be canceled when this GameplayAbility is activated.
+        /// Abilities with these tags are cancelled when this ability is executed
         /// </summary>
         [Export] public GameplayTagContainer CancelAbilitiesWithTag;
 
         /// <summary>
-        /// Other GameplayAbilities that have these GameplayTags in their Ability Tags are blocked from activating while this GameplayAbility is active.
+        /// Abilities with these tags are blocked while this ability is active
         /// </summary>
         [Export] public GameplayTagContainer BlockAbilitiesWithTag;
 
         /// <summary>
-        /// These GameplayTags are given to the GameplayAbility's owner while this GameplayAbility is active.
+        /// Tags to apply to activating owner while this ability is active.
         /// </summary>
         [Export] public GameplayTagContainer ActivationOwnedTags;
 
         /// <summary>
-        /// This GameplayAbility can only be activated if the owner has all of these GameplayTags.
+        /// This ability can only be activated if the activating actor/component has all of these tags
         /// </summary>
         [Export] public GameplayTagContainer ActivationRequiredTags;
 
         /// <summary>
-        /// This GameplayAbility cannot be activated if the owner has any of these GameplayTags.
+        /// This ability is blocked if the activating actor/component has any of these tags
         /// </summary>
         [Export] public GameplayTagContainer ActivationBlockedTags;
 
         /// <summary>
-        /// This GameplayAbility can only be activated if the Source has all of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.
+        /// This ability can only be activated if the source actor/component has all of these tags
         /// </summary>
         //[Export] public GameplayTagContainer SourceRequiredTags;
 
         /// <summary>
-        /// This GameplayAbility cannot be activated if the Source has any of these GameplayTags. The Source GameplayTags are only set if the GameplayAbility is triggered by an event.
+        /// This ability is blocked if the source actor/component has any of these tags
         /// </summary>
         //[Export] public GameplayTagContainer SourceBlockedTags;
 
         /// <summary>
-        /// This GameplayAbility can only be activated if the Target has all of these GameplayTags. The Target GameplayTags are only set if the GameplayAbility is triggered by an event.
+        /// This ability can only be activated if the target actor/component has all of these tags
         /// </summary>
         //[Export] public GameplayTagContainer TargetRequiredTags;
 
         /// <summary>
-        /// This GameplayAbility cannot be activated if the Target has any of these GameplayTags. The Target GameplayTags are only set if the GameplayAbility is triggered by an event.
+        /// This ability is blocked if the target actor/component has any of these tags
         /// </summary>
         //[Export] public GameplayTagContainer TargetBlockedTags;
 
         [ExportCategory("Input")]
 
-        [Export]
-        public StringName InputActionName { get; private set; }
+        [Export] public StringName InputActionName { get; private set; }
 
         //private List<Coroutine> coroutines = new List<Coroutine>();
 
