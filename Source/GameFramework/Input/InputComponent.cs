@@ -7,6 +7,7 @@ public partial class InputComponent : Node
 {
     public bool Enabled { get; set; } = true;
     public List<ActionInputBinding> Bindings {  get; set; } = new List<ActionInputBinding>();
+    public Action RemovedFromInputStackAction;
 
     public virtual void BindAction(StringName actionName, TriggerEvent triggerEvent, Action action)
     {

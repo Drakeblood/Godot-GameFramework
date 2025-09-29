@@ -9,17 +9,21 @@ namespace GameFramework.Core
         [Export] public bool AutoManageActiveCameraTarget = true;
         protected Player Player;
         protected InputComponent InputComponent;
+
         private List<InputComponent> currentInputStack = new List<InputComponent>();
+        private List<InputComponent> pendingRemoveInputComponent = new List<InputComponent>();
+        private bool scopeLock = false;
 
         public override void _EnterTree()
         {
-            //InputComponent = new InputComponent();
-            //AddChild(InputComponent);
-            //RegisterInputComponent(InputComponent);
+            InputComponent = new InputComponent();
+            AddChild(InputComponent);
+            RegisterInputComponent(InputComponent);
         }
 
         public override void _Process(double delta)
         {
+            scopeLock = true;
             for (int i = currentInputStack.Count - 1; i >= 0; i--)
             {
                 if (!currentInputStack[i].Enabled) { continue; }
@@ -32,10 +36,21 @@ namespace GameFramework.Core
                     }
                 }
             }
+            scopeLock = false;
+
+            if (currentInputStack.Count > 0)
+            {
+                for (int i = 0; i < pendingRemoveInputComponent.Count; i++)
+                {
+                    UnregisterInputComponent(pendingRemoveInputComponent[i]);
+                }
+                pendingRemoveInputComponent.Clear();
+            }
         }
 
         public override void _Input(InputEvent @event)
         {
+            scopeLock = true;
             for (int i = currentInputStack.Count - 1; i >= 0; i--)
             {
                 if (!currentInputStack[i].Enabled) { continue; }
@@ -55,6 +70,7 @@ namespace GameFramework.Core
                     }
                 }
             }
+            scopeLock = false;
         }
 
         public void SetPlayer(Player player)
@@ -126,7 +142,15 @@ namespace GameFramework.Core
 
         public void UnregisterInputComponent(InputComponent input)
         {
-            currentInputStack.Remove(input);
+            if (scopeLock)
+            {
+                pendingRemoveInputComponent.Add(input);
+            }
+            else
+            {
+                currentInputStack.Remove(input);
+                input.RemovedFromInputStackAction?.Invoke();
+            }
         }
     }
 }

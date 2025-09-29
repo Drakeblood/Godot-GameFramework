@@ -32,20 +32,20 @@ public partial class Hero : Node2D, IPawn
 
     public void SetupInputComponent(InputComponent inputComponent) 
     {
-        inputComponent.BindAction("fire", TriggerEvent.Started, () => { GD.Print(string.Format("Fire started {0}: {1}", frameCounter, Name)); });
+        inputComponent.BindAction("fire", TriggerEvent.Started, () => { GD.Print(string.Format("Fire started {0}: {1}", frameCounter, Name)); GetNode<AbilitySystemComponent>("ASC").AbilityLocalInputPressed("fire"); });
         inputComponent.BindAction("fire", TriggerEvent.Triggered, () => { GD.Print(string.Format("Fire triggered {0}: {1}", frameCounter, Name)); });
-        inputComponent.BindAction("fire", TriggerEvent.Completed, () => { GD.Print(string.Format("Fire completed {0}: {1}", frameCounter, Name)); });
+        inputComponent.BindAction("fire", TriggerEvent.Completed, () => { GD.Print(string.Format("Fire completed {0}: {1}", frameCounter, Name)); GetNode<AbilitySystemComponent>("ASC").AbilityLocalInputReleased("fire"); });
 
         inputComponent.BindAction("switchPawn", TriggerEvent.Started, () =>
         {
-            Hero Hero2 = ProjectStatics.GetLevel<Level>(GetTree()).GetNodeOrNull<Hero>("Hero2");
+            Hero Hero2 = ProjectStatics.GetLevel<Level>().GetNodeOrNull<Hero>("Hero2");
             if (Hero2 != null && Hero2 != this)
             {
-                ProjectStatics.GetGameInstance<GameInstance>(GetTree()).GetPlayerController(0).Possess(Hero2.GetNode<PawnHandler>("PawnHandler"));
+                ProjectStatics.GetGameInstance<GameInstance>().GetPlayerController(0).Possess(Hero2.GetNode<PawnHandler>("PawnHandler"));
             }
             else
             {
-                ProjectStatics.GetGameInstance<GameInstance>(GetTree()).GetPlayerController(0).Possess(ProjectStatics.GetGameMode<MyGameMode>(GetTree()).Hero.GetNode<PawnHandler>("PawnHandler"));
+                ProjectStatics.GetGameInstance<GameInstance>().GetPlayerController(0).Possess(ProjectStatics.GetGameMode<MyGameMode>().Hero.GetNode<PawnHandler>("PawnHandler"));
             }
         });
     }

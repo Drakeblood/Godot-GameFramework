@@ -24,6 +24,7 @@ public partial class PawnHandler : Node
                 if (InputComponent == null)
                 {
                     InputComponent = new InputComponent();
+                    InputComponent.RemovedFromInputStackAction += () => { ClearInputComponent(); };
                     GetNode<Node>(PawnNodePath).AddChild(InputComponent);
                 }
 
@@ -45,11 +46,6 @@ public partial class PawnHandler : Node
         if (Pawn != null)
         {
             Pawn.UnPossessed();
-        }
-
-        if (InputComponent != null)
-        {
-            CallDeferred("ClearInputComponent");
         }
     }
 
