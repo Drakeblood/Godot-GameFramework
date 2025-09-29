@@ -32,7 +32,6 @@ namespace GameFramework.Core
 
         public override void _Initialize()
         {
-            ProjectStatics.GFSceneTree = this;
 
             {//Initialize singletons
                 GameplayTagsManager gameplayTagsManager = GameplayTagsManager.Instance;

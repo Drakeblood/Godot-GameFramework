@@ -38,14 +38,14 @@ public partial class Hero : Node2D, IPawn
 
         inputComponent.BindAction("switchPawn", TriggerEvent.Started, () =>
         {
-            Hero Hero2 = ProjectStatics.GetLevel<Level>().GetNodeOrNull<Hero>("Hero2");
+            Hero Hero2 = ProjectStatics.GetLevel<Level>(GetTree()).GetNodeOrNull<Hero>("Hero2");
             if (Hero2 != null && Hero2 != this)
             {
-                ProjectStatics.GetGameInstance<GameInstance>().GetPlayerController(0).Possess(Hero2.GetNode<PawnHandler>("PawnHandler"));
+                ProjectStatics.GetGameInstance<GameInstance>(GetTree()).GetPlayerController(0).Possess(Hero2.GetNode<PawnHandler>("PawnHandler"));
             }
             else
             {
-                ProjectStatics.GetGameInstance<GameInstance>().GetPlayerController(0).Possess(ProjectStatics.GetGameMode<MyGameMode>().Hero.GetNode<PawnHandler>("PawnHandler"));
+                ProjectStatics.GetGameInstance<GameInstance>(GetTree()).GetPlayerController(0).Possess(ProjectStatics.GetGameMode<MyGameMode>(GetTree()).Hero.GetNode<PawnHandler>("PawnHandler"));
             }
         });
     }

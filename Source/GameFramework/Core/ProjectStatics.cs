@@ -3,6 +3,8 @@ using System.Text.Json;
 
 using Godot;
 
+using GameFramework.Assertion;
+
 namespace GameFramework.Core
 {
     public static class ProjectStatics
@@ -11,8 +13,6 @@ namespace GameFramework.Core
         public const string SavesFolder = "saves/";
         public const string SavesLocation = UserLocation + SavesFolder + "/";
         public const string SaveGameEncryptionKey = "super_secret_password";
-
-        public static GFSceneTree GFSceneTree;
 
         public static void SaveGame<T>(string slotName, T data, bool encrypt = true) where T : SaveGame
         {
@@ -88,9 +88,16 @@ namespace GameFramework.Core
             }
         }
 
-        public static T GetGameInstance<T>() where T : GameInstance => GFSceneTree.GameInstance as T;
-        public static T GetGameMode<T>() where T : GameMode => GFSceneTree.GameMode as T;
-        public static T GetLevel<T>() where T : Level => GFSceneTree.CurrentLevel as T;
-        public static void OpenLevel(string resourcePath) => GFSceneTree.OpenLevel(resourcePath);
+        private static GFSceneTree GetGFSceneTree(SceneTree sceneTree)
+        {
+            GFSceneTree gfSceneTree = sceneTree as GFSceneTree;
+            Assert.IsNotNull(gfSceneTree, "GFSceneTree is not valid. Ensure that \"application/run/main_loop_type\" option is set to \"GFSceneTree\".");
+            return gfSceneTree;
+        }
+
+        public static T GetGameInstance<T>(SceneTree sceneTree) where T : GameInstance => GetGFSceneTree(sceneTree).GameInstance as T;
+        public static T GetGameMode<T>(SceneTree sceneTree) where T : GameMode => GetGFSceneTree(sceneTree).GameMode as T;
+        public static T GetLevel<T>(SceneTree sceneTree) where T : Level => GetGFSceneTree(sceneTree).CurrentLevel as T;
+        public static void OpenLevel(SceneTree sceneTree, string resourcePath) => GetGFSceneTree(sceneTree).OpenLevel(resourcePath);
     }
 }
