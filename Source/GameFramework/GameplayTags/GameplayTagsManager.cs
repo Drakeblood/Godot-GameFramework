@@ -35,7 +35,8 @@ namespace GameFramework.GameplayTags
             for (int i = 0; i <  gameplayTagsFilesPaths.Length; i++)
             {
                 FileAccess file = FileAccess.Open(gameplayTagsFilesPaths[i], FileAccess.ModeFlags.Read);
-                Assert.IsTrue(file != null || file.IsOpen(), string.Format("Could not load {0} file", gameplayTagsFilesPaths[i]));
+                Assert.IsNotNull(file, string.Format("Could not load {0} file", gameplayTagsFilesPaths[i]));
+                Assert.IsTrue(file.IsOpen(), string.Format("{0} file is not null but it's not open", gameplayTagsFilesPaths[i]));
 
                 while (file.GetPosition() < file.GetLength())
                 {
